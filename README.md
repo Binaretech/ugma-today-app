@@ -1,16 +1,11 @@
-# flutter_app
+# Ugma Today Flutter Front-End
 
-A new Flutter project.
+UgmaToday es una aplicación satiríca inspirada en DolarToday que muestra los diferentes precios por unidad de credito de la Universidad Nororiental Privada Gran Mariscal De Ayacucho
 
-## Getting Started
+En este repositorio se encuentra la aplicación front end mutiplataforma usando Flutter
 
-This project is a starting point for a Flutter application.
+## Status
 
-A few resources to get you started if this is your first Flutter project:
+El proyecto se encuentra en una temprana etapa de desarrollo
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Las contribuciones son bienvenidas

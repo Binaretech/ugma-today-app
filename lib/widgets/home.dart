@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/lang/message/message_locations.dart';
+import 'package:flutter_app/lang/supported_locales.dart';
 
 class Home extends StatelessWidget {
   final Function() increaseAction;
@@ -16,9 +18,7 @@ class Home extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
+            Text(MessageLocations.of(context).click),
             Text(
               '$count',
               style: Theme.of(context).textTheme.headline4,
