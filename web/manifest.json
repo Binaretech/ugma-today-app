@@ -1,6 +1,6 @@
 {
-    "name": "flutter_app",
-    "short_name": "flutter_app",
+    "name": "ugma_today",
+    "short_name": "ugma_today",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

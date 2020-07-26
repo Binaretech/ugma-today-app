@@ -1,4 +1,4 @@
-import 'package:flutter_app/redux/states/counter_state.dart';
+import 'package:ugma_today/redux/states/counter_state.dart';
 
 class AppState {
   CounterState counter;

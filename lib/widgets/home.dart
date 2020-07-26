@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/lang/message/message_locations.dart';
-import 'package:flutter_app/lang/supported_locales.dart';
+import 'package:ugma_today/lang/message/message_locations.dart';
+import 'package:ugma_today/lang/supported_locales.dart';
 
 class Home extends StatelessWidget {
   final Function() increaseAction;

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 class MessageLocations {
   MessageLocations(this.locale);
-
   final Locale locale;
 
   static MessageLocations of(BuildContext context) {
