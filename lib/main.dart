@@ -18,11 +18,11 @@ void main() {
 
 class UgmaToday extends StatelessWidget {
   final Store<AppState> store;
-
   UgmaToday({Key key, this.store}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+
     return StoreProvider<AppState>(
       store: this.store,
       child: MaterialApp(
