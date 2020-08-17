@@ -18,77 +18,62 @@ class Response {
 /// http methods enum
 enum _Method { Get, Post, Put, Delete }
 
-/// Manage requests
+/// Manage http requests
 class Request {
   final http.Client _client;
   final String _url;
   final _Method _method;
   final Duration timeout;
 
-  /// GlobalKey to generate snackbars
-  final GlobalKey<ScaffoldState> scaffoldKey;
+  final BuildContext _context;
 
-  /// build context to get locales
-  static BuildContext _context;
-
-  static set buildContext(BuildContext context) {
-    _context = context;
-  }
-
-  Request._instantiate(this._client, this._url, this._method,
-      {this.timeout = const Duration(seconds: 10), this.scaffoldKey});
+  Request._instantiate(this._client, this._url, this._method, this._context,
+      {this.timeout = const Duration(seconds: 10)});
 
   /// Return request instance prepared to send a get request
-  static Request get(String url,
-      {bool useBaseUrl = true, GlobalKey<ScaffoldState> scaffoldKey}) {
+  static Request get(String url, BuildContext context,
+      {bool useBaseUrl = true}) {
     var client = http.Client();
 
     if (useBaseUrl) {
       url = '${Config.get('url')}/$url';
     }
 
-    return Request._instantiate(client, url, _Method.Get,
-        scaffoldKey: scaffoldKey);
+    return Request._instantiate(client, url, _Method.Get, context);
   }
 
   /// Send request and return a response future
   Future<Response> send({bool handleEvent = true}) async {
-    Future<http.Response> res;
+    Future<http.Response> resFuture;
     switch (_method) {
       case _Method.Get:
-        res = _client.get(_url);
+        resFuture = _client.get(_url);
         break;
 
       case _Method.Post:
-        res = _client.post(_url);
+        resFuture = _client.post(_url);
         break;
 
       case _Method.Put:
-        res = _client.put(_url);
+        resFuture = _client.put(_url);
         break;
 
       case _Method.Delete:
-        res = _client.delete(_url);
+        resFuture = _client.delete(_url);
         break;
     }
 
     try {
-      http.Response response = await res.timeout(timeout);
+      http.Response res = await resFuture.timeout(timeout);
 
-      var body = jsonDecode(response.body) as Map<String, dynamic>;
-
-      if (scaffoldKey != null) _dispatchEvent(response.statusCode, body);
-
-      return Response(
-        body: body,
-        status: response.statusCode,
+      Response response = Response(
+        body: jsonDecode(res.body) as Map<String, dynamic>,
+        status: res.statusCode,
       );
+
+      return _dispatchEvent(response);
     } catch (error) {
-      scaffoldKey.currentState.showSnackBar(
-        SnackBar(content: Text(ErrorsLocations.of(_context).networkError)),
-      );
-
-      return Future.error(error);
+      return Future.error(ErrorsLocations.of(_context).networkError);
     }
   }
 
@@ -99,41 +84,50 @@ class Request {
     } catch (_) {}
   }
 
-  void _onSuccess(String message) {
+  Future<Response> _onSuccess(Response response) {
+    String message = _getMessageFromResponse(response.body);
+
     if (message != null) {
-      scaffoldKey.currentState.showSnackBar(
+      Scaffold.of(_context).showSnackBar(
         SnackBar(
           content: Text(message),
         ),
       );
     }
+
+    return Future.value(response);
   }
 
-  void _onError(String message) {
+  Future<Response> _onError(Response response) {
+    String message = _getMessageFromResponse(response.body);
     if (message != null) {
-      scaffoldKey.currentState.showSnackBar(
+      Scaffold.of(_context).showSnackBar(
         SnackBar(
           content: Text(message),
           backgroundColor: Theme.of(_context).errorColor,
         ),
       );
     }
+
+    return Future.error(message ?? ErrorsLocations.of(_context).generalError);
   }
 
-  void _dispatchEvent(int statusCode, Map<String, dynamic> body) {
-    if (statusCode >= 200 && statusCode < 300) {
-      return _onSuccess(_getMessageFromResponse(body));
+  Future<Response> _dispatchEvent(Response response) {
+    if (response.status >= 200 && response.status < 300) {
+      return _onSuccess(response);
     }
 
-    if (statusCode >= 400 && statusCode < 500) {
-      return _onError(_getMessageFromResponse(body));
+    if (response.status >= 400 && response.status < 500) {
+      return _onError(response);
     }
 
-    if (statusCode >= 500) {
-      return _onError(_getMessageFromResponse(body));
+    if (response.status >= 500) {
+      return _onError(response);
     }
 
-    return _onError(ErrorsLocations.of(_context).networkError);
+    return _onError(
+      Response(body: {'message': ErrorsLocations.of(_context).networkError}),
+    );
   }
 
   String _getMessageFromResponse(Map<String, dynamic> response,
