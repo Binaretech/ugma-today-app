@@ -16,7 +16,7 @@ class Config {
   };
 
   static final Map<String, String> _prodConf = {
-    'url': 'https://production.com'
+    'url': 'https://api-ugma-today.herokuapp.com/api'
   };
 
   static String get(String name) {

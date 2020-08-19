@@ -1,4 +1,4 @@
-name: Flutter Web
+name: Flutter
 on: [push]
 #  push:
 #    branches:
@@ -7,7 +7,7 @@ jobs:
   build:
     name: Build Web
     env:
-      my_secret: ${{secrets.HEROKU_API_KEY}}
+      HEROKU_API_KEY: ${{secrets.HEROKU_API_KEY}}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
@@ -16,13 +16,13 @@ jobs:
           channel: 'dev'
       - run: flutter config --enable-web
       - run: flutter pub get
+      - run: cp lib/config/config.example.dart lib/config/config.dart
       - run: flutter build web --release
       - run: |
           cd build/web
           git init
           git config --global user.email "binaretech@gmail.com" 
           git config --global user.name "Binary Software Technologies" 
-          heroku git:remote -a ugma-today
           git add .
           git commit -am "release app"
-          git push heroku master
+          git push https://heroku:$HEROKU_API_TOKEN@git.heroku.com/ugma-today.git origin/master:master -f
