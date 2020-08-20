@@ -30,6 +30,8 @@ dependencies:
   redux: ^4.0.0+2
   flutter_redux: ^0.6.0
   http: ^0.12.2
+  universal_html: ^1.2.3
+
 
   shared_preferences: '>=0.5.8 <2.0.0'
   shared_preferences_web: '>=0.1.2+7 <2.0.0'

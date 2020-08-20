@@ -1,3 +1,12 @@
-export 'routes_main.dart'
-    if (dart.library.js) 'routes_web.dart'
-    if (dart.library.io) 'routes_io.dart';
+import 'package:flutter/material.dart';
+import 'package:ugma_today/screens/home.dart';
+
+Map<String, Widget Function(BuildContext)> routes() {
+  return {
+    '/': (context) => _route(context, Home()),
+  };
+}
+
+Widget _route(BuildContext context, Widget route) {
+  return route;
+}

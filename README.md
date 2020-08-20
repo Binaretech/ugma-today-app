@@ -1,4 +1,6 @@
+![Flutter](https://github.com/Binaretech/ugma-today-flutter-app/workflows/Flutter/badge.svg) 
 # Ugma Today Flutter Front-End App
+
 
 UgmaToday es una aplicación satiríca inspirada en DolarToday que muestra los diferentes precios por unidad de credito de la Universidad Nororiental Privada Gran Mariscal De Ayacucho
 
