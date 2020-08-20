@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ugma_today/lang/message/message_locations.dart';
 import 'package:ugma_today/models/cost.dart';
 import 'package:ugma_today/routes/api_routes.dart';
 import 'package:ugma_today/utils/http/http.dart';
@@ -86,25 +87,31 @@ class _CostListState extends State<CostList> {
 
     return Container(
       constraints: BoxConstraints(maxWidth: 400.0, minWidth: 250.0),
-      child: ListView.builder(
-        itemCount: costs.length,
-        itemBuilder: (context, index) => Card(
-          child: ListTile(
-            onTap: () => showCostDialog(context, costs[index]),
-            title: Center(
-              child: Text(
-                costs[index].name,
+      child: costs.length > 0
+          ? ListView.builder(
+              itemCount: costs.length,
+              itemBuilder: (context, index) => Card(
+                child: ListTile(
+                  onTap: () => showCostDialog(context, costs[index]),
+                  title: Center(
+                    child: Text(
+                      costs[index].name,
+                    ),
+                  ),
+                  subtitle: Center(
+                    child: Text(
+                      '${costs[index].price} ${costs[index].currencyName}',
+                      style: Theme.of(context).textTheme.headline5,
+                    ),
+                  ),
+                ),
               ),
+            )
+          : Text(
+              MessageLocations.of(context).temporalyNoRecords,
+              style: Theme.of(context).textTheme.headline5,
+              textAlign: TextAlign.center,
             ),
-            subtitle: Center(
-              child: Text(
-                '${costs[index].price} ${costs[index].currencyName}',
-                style: Theme.of(context).textTheme.headline5,
-              ),
-            ),
-          ),
-        ),
-      ),
     );
   }
 

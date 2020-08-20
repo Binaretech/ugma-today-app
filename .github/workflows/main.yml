@@ -1,0 +1,44 @@
+name: Flutter
+on: [push]
+
+jobs:
+  test:
+    name: test app
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: subosito/flutter-action@v1
+        with:
+          channel: 'dev'
+      - run: flutter config --enable-web
+      - run: flutter pub get
+      - run: cp lib/config/config.example.dart lib/config/config.dart
+      - run: flutter test
+      
+  deploy:
+    name: deploy app
+    runs-on: ubuntu-latest
+    needs: test
+    if: github.ref == 'refs/heads/master'
+    env:
+      HEROKU_API_KEY: ${{secrets.HEROKU_API_KEY}}
+    steps:
+      - uses: actions/checkout@v1
+      - uses: subosito/flutter-action@v1
+        with:
+          channel: 'dev'
+      - run: flutter config --enable-web
+      - run: flutter pub get
+      - run: cp lib/config/config.example.dart lib/config/config.dart
+      - run: flutter build web --release
+      - run: |
+          cd build/web
+          echo "{}" >> composer.json
+          echo "<?php include_once('index.html'); ?>" >> index.php
+          git init
+          git config --global user.email "binaretech@gmail.com" 
+          git config --global user.name "Binary Software Technologies" 
+          git add .
+          git commit -am "release app"
+          git remote add heroku https://heroku:$HEROKU_API_KEY@git.heroku.com/ugma-today.git
+          git push heroku master -f
