@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ugma_today/lang/message/message_locations.dart';
+import 'package:ugma_today/lang/localization.dart';
 import 'package:ugma_today/models/cost.dart';
 import 'package:ugma_today/routes/api_routes.dart';
 import 'package:ugma_today/utils/http/http.dart';
@@ -108,7 +108,7 @@ class _CostListState extends State<CostList> {
               ),
             )
           : Text(
-              MessageLocations.of(context).temporalyNoRecords,
+              Localization.of(context).trans('temporalyNoRecords'),
               style: Theme.of(context).textTheme.headline5,
               textAlign: TextAlign.center,
             ),

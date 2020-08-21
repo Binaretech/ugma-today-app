@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:ugma_today/config/config.dart';
-import 'package:ugma_today/lang/errors/errors_locations.dart';
+import 'package:ugma_today/lang/localization.dart';
 
 /// Response model
 class Response {
@@ -18,11 +18,19 @@ class Response {
 /// http methods enum
 enum _Method { Get, Post, Put, Delete }
 
-/// Manage http requests
+/// Wrapper for the http package
+/// This class must be instantiated with the static `get` `post` `put` and `delete` methods
 class Request {
+  /// This store the http client instance
   final http.Client _client;
+
+  /// Request's URL
   final String _url;
+
+  /// HTTP Method
   final _Method _method;
+
+  /// Request timeout. default `10s`
   final Duration timeout;
 
   final BuildContext _context;
@@ -73,7 +81,7 @@ class Request {
 
       return _dispatchEvent(response);
     } catch (error) {
-      return Future.error(ErrorsLocations.of(_context).networkError);
+      return Future.error(Localization.of(_context).trans('network_error'));
     }
   }
 
@@ -109,9 +117,11 @@ class Request {
       );
     }
 
-    return Future.error(message ?? ErrorsLocations.of(_context).generalError);
+    return Future.error(
+        message ?? Localization.of(_context).trans('generalError'));
   }
 
+  /// Handle the request's sucess or failure
   Future<Response> _dispatchEvent(Response response) {
     if (response.status >= 200 && response.status < 300) {
       return _onSuccess(response);
@@ -126,10 +136,12 @@ class Request {
     }
 
     return _onError(
-      Response(body: {'message': ErrorsLocations.of(_context).networkError}),
+      Response(
+          body: {'message': Localization.of(_context).trans('network_error')}),
     );
   }
 
+  /// Acts like a helper to get the message from the request response
   String _getMessageFromResponse(Map<String, dynamic> response,
       {String defaultMessage}) {
     return response.containsKey('message')
