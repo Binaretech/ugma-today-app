@@ -28,5 +28,11 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.byType(Card, skipOffstage: false), findsWidgets);
+
+    await tester.tap(find.text('name0'));
+
+    await tester.pumpAndSettle();
+
+    expect(find.byType(SimpleDialog, skipOffstage: false), findsWidgets);
   });
 }
