@@ -118,7 +118,7 @@ class Request {
     }
 
     return Future.error(
-        message ?? Localization.of(_context).trans('generalError'));
+        message ?? Localization.of(_context).trans('general_error'));
   }
 
   /// Handle the request's sucess or failure
