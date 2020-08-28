@@ -81,7 +81,16 @@ class Request {
 
       return _dispatchEvent(response);
     } catch (error) {
-      return Future.error(Localization.of(_context).trans('network_error'));
+      Scaffold.of(_context, nullOk: true).showSnackBar(
+        SnackBar(
+          content:
+              Text(Localization.of(_context).trans('errors.network_error')),
+          backgroundColor: Theme.of(_context).errorColor,
+        ),
+      );
+
+      return Future.error(
+          Localization.of(_context).trans('errors.network_error'));
     }
   }
 
@@ -96,7 +105,7 @@ class Request {
     String message = _getMessageFromResponse(response.body);
 
     if (message != null) {
-      Scaffold.of(_context).showSnackBar(
+      Scaffold.of(_context, nullOk: true).showSnackBar(
         SnackBar(
           content: Text(message),
         ),
@@ -109,7 +118,7 @@ class Request {
   Future<Response> _onError(Response response) {
     String message = _getMessageFromResponse(response.body);
     if (message != null) {
-      Scaffold.of(_context).showSnackBar(
+      Scaffold.of(_context, nullOk: true).showSnackBar(
         SnackBar(
           content: Text(message),
           backgroundColor: Theme.of(_context).errorColor,
@@ -118,7 +127,7 @@ class Request {
     }
 
     return Future.error(
-        message ?? Localization.of(_context).trans('general_error'));
+        message ?? Localization.of(_context).trans('errors.general_error'));
   }
 
   /// Handle the request's sucess or failure
@@ -136,8 +145,9 @@ class Request {
     }
 
     return _onError(
-      Response(
-          body: {'message': Localization.of(_context).trans('network_error')}),
+      Response(body: {
+        'message': Localization.of(_context).trans('errors.network_error')
+      }),
     );
   }
 

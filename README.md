@@ -20,6 +20,11 @@ Para ejecutar este proyecto en desarrollo es necesario tener el [Back-End](https
 
 Se debe copiar el archivo config/config.example.dart a config/config.dart y luego establecer las configuraciones que se requieran
 
+Copiar el archivo de configuraciones
+```bash
+$ cp lib/config/config.example.dart lib/config/config.dart
+```
+
 por ultimo se tiene que ejecutar flutter
 ```bash
 $ flutter run

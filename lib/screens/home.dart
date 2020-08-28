@@ -2,14 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:ugma_today/models/cost.dart';
 import 'package:ugma_today/routes/api_routes.dart';
 import 'package:ugma_today/utils/http/http.dart';
+import 'package:ugma_today/widgets/base_scaffold.dart';
 import 'package:ugma_today/widgets/costs_list.dart';
 
-class Home extends StatefulWidget {
+class Home extends StatelessWidget {
   @override
-  _HomeState createState() => _HomeState();
+  Widget build(BuildContext context) {
+    return BaseScaffold(body: _HomeBody());
+  }
 }
 
-class _HomeState extends State<Home> {
+class _HomeBody extends StatefulWidget {
+  @override
+  _HomeBodyState createState() => _HomeBodyState();
+}
+
+class _HomeBodyState extends State<_HomeBody> {
   bool loading = true;
   List<Cost> costs = [];
   String errorMessage;
@@ -61,13 +69,8 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Ugma today"),
-      ),
-      body: Center(
-        child: loading ? CircularProgressIndicator() : showContent(),
-      ),
+    return Center(
+      child: loading ? CircularProgressIndicator() : showContent(),
     );
   }
 }

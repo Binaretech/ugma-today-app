@@ -63,7 +63,7 @@ class CostList extends StatelessWidget {
               ),
             )
           : Text(
-              Localization.of(context).trans('temporalyNoRecords'),
+              Localization.of(context).trans('messages.temporalyNoRecords'),
               style: Theme.of(context).textTheme.headline5,
               textAlign: TextAlign.center,
             ),
