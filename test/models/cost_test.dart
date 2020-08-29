@@ -1,22 +1,16 @@
-import 'package:mockito/mockito.dart';
 import 'package:ugma_today/models/cost.dart';
 import 'package:ugma_today/utils/http/http.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-class MockRequest extends Mock implements Request {}
-
 void main() {
   test('Cost from response', () async {
-    MockRequest request = MockRequest();
-    when(request.send()).thenAnswer((_) async => Response(status: 200, body: {
-          'name': 'name',
-          'price': '10000',
-          'comment': 'comment',
-          'currency': 0,
-          'currencyName': 'currencyName'
-        }));
-
-    Response response = await request.send();
+    Response response = Response(status: 200, body: {
+      'name': 'name',
+      'price': '10000',
+      'comment': 'comment',
+      'currency': 0,
+      'currencyName': 'currencyName'
+    });
 
     Cost cost = Cost.fromResponse(response.body);
 
@@ -30,26 +24,21 @@ void main() {
   });
 
   test('Cost list from respose', () async {
-    MockRequest request = MockRequest();
-    when(request.send()).thenAnswer(
-      (_) async => Response(
-        status: 200,
-        body: {
-          'data': List.generate(
-            10,
-            (_) => {
-              'name': 'name',
-              'price': '10000',
-              'comment': 'comment',
-              'currency': 0,
-              'currencyName': 'currencyName'
-            },
-          ),
-        },
-      ),
+    Response response = Response(
+      status: 200,
+      body: {
+        'data': List.generate(
+          10,
+          (_) => {
+            'name': 'name',
+            'price': '10000',
+            'comment': 'comment',
+            'currency': 0,
+            'currencyName': 'currencyName'
+          },
+        ),
+      },
     );
-
-    Response response = await request.send();
 
     List<Cost> costs = Cost.fromResponseList(response.body['data']);
 

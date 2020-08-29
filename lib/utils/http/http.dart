@@ -35,16 +35,21 @@ class Request {
 
   final BuildContext _context;
 
+  static http.Client _customClient;
+
+  static set customClient(http.Client customClient) =>
+      _customClient = customClient;
+
   Request._instantiate(this._client, this._url, this._method, this._context,
       {this.timeout = const Duration(seconds: 10)});
 
   /// Return request instance prepared to send a get request
   static Request get(String url, BuildContext context,
       {bool useBaseUrl = true}) {
-    var client = http.Client();
+    var client = _customClient ?? http.Client();
 
     if (useBaseUrl) {
-      url = '${Config.get('url')}/$url';
+      url = '${config('url')}/$url';
     }
 
     return Request._instantiate(client, url, _Method.Get, context);
@@ -81,7 +86,16 @@ class Request {
 
       return _dispatchEvent(response);
     } catch (error) {
-      return Future.error(Localization.of(_context).trans('network_error'));
+      Scaffold.of(_context, nullOk: true).showSnackBar(
+        SnackBar(
+          content:
+              Text(Localization.of(_context).trans('errors.network_error')),
+          backgroundColor: Theme.of(_context).errorColor,
+        ),
+      );
+
+      return Future.error(
+          Localization.of(_context).trans('errors.network_error'));
     }
   }
 
@@ -96,7 +110,7 @@ class Request {
     String message = _getMessageFromResponse(response.body);
 
     if (message != null) {
-      Scaffold.of(_context).showSnackBar(
+      Scaffold.of(_context, nullOk: true).showSnackBar(
         SnackBar(
           content: Text(message),
         ),
@@ -109,7 +123,7 @@ class Request {
   Future<Response> _onError(Response response) {
     String message = _getMessageFromResponse(response.body);
     if (message != null) {
-      Scaffold.of(_context).showSnackBar(
+      Scaffold.of(_context, nullOk: true).showSnackBar(
         SnackBar(
           content: Text(message),
           backgroundColor: Theme.of(_context).errorColor,
@@ -118,7 +132,7 @@ class Request {
     }
 
     return Future.error(
-        message ?? Localization.of(_context).trans('generalError'));
+        message ?? Localization.of(_context).trans('errors.general_error'));
   }
 
   /// Handle the request's sucess or failure
@@ -136,8 +150,9 @@ class Request {
     }
 
     return _onError(
-      Response(
-          body: {'message': Localization.of(_context).trans('network_error')}),
+      Response(body: {
+        'message': Localization.of(_context).trans('errors.network_error')
+      }),
     );
   }
 

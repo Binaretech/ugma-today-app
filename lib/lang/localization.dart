@@ -18,19 +18,37 @@ class Localization {
   }
 
   /// This member stores all the translations
-  final Map<String, Map<String, String>> _sentences = {
+  final _sentences = {
     'es': Map()..addAll(errors['es'])..addAll(messages['es']),
     'en': Map()..addAll(errors['en'])..addAll(messages['en']),
   };
 
-  /// This method acts like acessor for the translations
+  /// This method acts like acessor for the translations using dot notation
   /// if the key exists in `_sentences` returns the translated word/phrase
-  /// otherwise returns the given key
-  String trans(String key) {
-    if (key == null) {
+  /// otherwise returns the given trans string
+  /// ### Example
+  /// ```dart
+  /// Localization.of(context).trans('messages.updatedApp') // Returns 'There is an application update, please refresh' if the locale is `en`
+  /// ```
+  String trans(String trans) {
+    if (trans == null) {
       return '...';
     }
 
-    return _sentences[_locale.languageCode][key] ?? key;
+    final keys = trans.split('.');
+
+    dynamic message;
+
+    message = _sentences[_locale.languageCode];
+
+    for (var key in keys) {
+      message = message[key];
+
+      if (message == null) return trans;
+    }
+
+    if (!(message is String)) return trans;
+
+    return message;
   }
 }
