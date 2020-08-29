@@ -35,13 +35,18 @@ class Request {
 
   final BuildContext _context;
 
+  static http.Client _customClient;
+
+  static set customClient(http.Client customClient) =>
+      _customClient = customClient;
+
   Request._instantiate(this._client, this._url, this._method, this._context,
       {this.timeout = const Duration(seconds: 10)});
 
   /// Return request instance prepared to send a get request
   static Request get(String url, BuildContext context,
       {bool useBaseUrl = true}) {
-    var client = http.Client();
+    var client = _customClient ?? http.Client();
 
     if (useBaseUrl) {
       url = '${Config.get('url')}/$url';
