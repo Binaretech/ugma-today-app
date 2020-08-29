@@ -9,7 +9,7 @@ class MockRequest extends Mock implements http.Client {}
 void main() {
   test('Test success get method', () async {
     http.Client client = MockRequest();
-    final url = '${Config.get('url')}/test';
+    final url = '${config('url')}/test';
     when(client.get(url))
         .thenAnswer((_) async => http.Response('{"test": "It works"}', 200));
 

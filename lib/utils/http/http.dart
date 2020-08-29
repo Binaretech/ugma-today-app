@@ -49,7 +49,7 @@ class Request {
     var client = _customClient ?? http.Client();
 
     if (useBaseUrl) {
-      url = '${Config.get('url')}/$url';
+      url = '${config('url')}/$url';
     }
 
     return Request._instantiate(client, url, _Method.Get, context);

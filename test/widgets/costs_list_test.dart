@@ -28,7 +28,7 @@ void main() {
 
   testWidgets('show cost list', (WidgetTester tester) async {
     http.Client client = MockRequest();
-    when(client.get('${Config.get('url')}/${apiRoutes.cost}'))
+    when(client.get('${config('url')}/${apiRoutes.cost}'))
         .thenAnswer((_) async => http.Response(jsonEncode(costs), 200));
 
     Request.customClient = client;
@@ -44,7 +44,7 @@ void main() {
 
   testWidgets('show cost dialog', (WidgetTester tester) async {
     http.Client client = MockRequest();
-    when(client.get('${Config.get('url')}/${apiRoutes.cost}'))
+    when(client.get('${config('url')}/${apiRoutes.cost}'))
         .thenAnswer((_) async => http.Response(jsonEncode(costs), 200));
 
     Request.customClient = client;

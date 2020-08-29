@@ -104,7 +104,10 @@ class _CostListState extends State<CostList> {
       );
     }
     return costs.length > 0
-        ? displayList(costs)
+        ? Container(
+            constraints: BoxConstraints(maxWidth: 400.0, minWidth: 250.0),
+            child: displayList(costs),
+          )
         : Text(
             Localization.of(context).trans('messages.temporalyNoRecords'),
             style: Theme.of(context).textTheme.headline5,

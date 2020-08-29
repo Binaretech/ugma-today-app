@@ -11,45 +11,35 @@ enum Env {
   Production,
 }
 
-/// Config handler
+/// App current env configuration
+const _appEnv = Env.Production;
+
+/// Development configurations
+const Map<String, String> _devConf = {
+  'url': 'http://localhost/api',
+};
+
+/// Stagging configurations
+const Map<String, String> _staggingConf = {'url': 'https://production.com'};
+
+/// Production configurations
+const Map<String, String> _prodConf = {
+  'url': 'https://api-ugma-today.herokuapp.com/api'
+};
+
+/// config accessor
 ///
-/// Store different configurations for each env
-class Config {
-  /// App current env configuration
-  static final _appEnv = Env.Production;
-
-  /// Development configurations
-  static final Map<String, String> _devConf = {
-    'url': 'http://localhost/api',
-  };
-
-  /// Stagging configurations
-  static final Map<String, String> _staggingConf = {
-    'url': 'https://production.com'
-  };
-
-  /// Production configurations
-  static final Map<String, String> _prodConf = {
-    'url': 'https://api-ugma-today.herokuapp.com/api'
-  };
-
-  /// config accessor
-  ///
-  /// ## Example
-  /// ```dart
-  /// Config.get('url') // returns 'http://localhost/api' if `_appEnv` is Development
-  /// ```
-  static String get(String name) {
-    switch (_appEnv) {
-      case Env.Development:
-        return _devConf[name];
-        break;
-      case Env.Stagging:
-        return _staggingConf[name];
-        break;
-      default:
-        return _prodConf[name];
-        break;
-    }
+/// ## Example
+/// ```dart
+/// config('url') // returns 'http://localhost/api' if `_appEnv` is Development
+/// ```
+String config(String name) {
+  switch (_appEnv) {
+    case Env.Development:
+      return _devConf[name];
+    case Env.Stagging:
+      return _staggingConf[name];
+    default:
+      return _prodConf[name];
   }
 }

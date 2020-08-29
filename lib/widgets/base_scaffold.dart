@@ -43,8 +43,8 @@ class _Model {
   int get hashCode => this.snackbarText.hashCode;
 }
 
-/// Because Snackbar depends on a context with Scaffold
-/// this widget is required, is only a wrapper with the store connector
+/// Because Snackbar depends on a build context with Scaffold
+/// this widget is required, it's just a wrapper with the store connector.
 /// logic related with redux must be here
 class _ScaffoldBody extends StatelessWidget {
   final Widget body;

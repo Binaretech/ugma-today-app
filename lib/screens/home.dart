@@ -6,6 +6,9 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BaseScaffold(
+      appBar: AppBar(
+        title: Text('Ugma Today'),
+      ),
       body: Center(
         child: CostList(),
       ),
