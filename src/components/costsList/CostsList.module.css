@@ -1,0 +1,37 @@
+.wrapper {
+	width: 100%;
+	padding: 20px 0px;
+}
+
+.mainContainer {
+	display: flex;
+	justify-content: space-evenly;
+	flex-direction: row;
+	flex-wrap: wrap;
+	max-height: 400px;
+	overflow-y: scroll;
+}
+
+.mainContainer > div {
+	margin-top: 10px;
+	margin-bottom: 10px;
+	margin-right: 10px;
+}
+
+.emptyResults {
+	width: 100%;
+	display: flex;
+	justify-content: center;
+}
+
+/* @media (max-width: 450px) { */
+/* 	.mainContainer { */
+/* 		flex-wrap: nowrap; */
+/* 		width: 85vw; */
+/* 		min-width: 250px; */
+/* 		max-width: 350px; */
+/* 		overflow: auto; */
+/* 		/1* overflow-y: hidden; *1/ */
+/* 		/1* overflow-x: scroll; *1/ */
+/* 	} */
+/* } */
