@@ -8,7 +8,7 @@
 	justify-content: space-evenly;
 	flex-direction: row;
 	flex-wrap: wrap;
-	max-height: 400px;
+	height: 40vh;
 	overflow-y: scroll;
 }
 
@@ -23,15 +23,3 @@
 	display: flex;
 	justify-content: center;
 }
-
-/* @media (max-width: 450px) { */
-/* 	.mainContainer { */
-/* 		flex-wrap: nowrap; */
-/* 		width: 85vw; */
-/* 		min-width: 250px; */
-/* 		max-width: 350px; */
-/* 		overflow: auto; */
-/* 		/1* overflow-y: hidden; *1/ */
-/* 		/1* overflow-x: scroll; *1/ */
-/* 	} */
-/* } */

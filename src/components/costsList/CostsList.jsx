@@ -5,6 +5,7 @@ import { useXhr } from '../../utils/xhr/hook';
 import apiEndpoints from '../../apiEndpoints';
 import { trans } from '../../trans/trans';
 import styles from './CostsList.module.css';
+import BigNumber from 'bignumber.js';
 
 function CostsList() {
 	const [page, setPage] = useState(1);
@@ -22,22 +23,33 @@ function CostsList() {
 	useEffect(() => {
 		send()
 			.then((res) => {
-				setResponse({
-					...response,
+				setResponse((oldRes) => ({
+					...oldRes,
 					...res,
-					ids: [...response?.ids, ...res?.ids],
+					ids: [...oldRes?.ids, ...res?.ids],
 					data: {
-						...response?.data,
+						...oldRes?.data,
 						...res?.data,
 					},
-				});
+				}));
 			})
 			.catch(console.error)
 			.finally(() => setLoading(false));
 	}, [page]);
 
+	const onScroll = (event) => {
+		const { scrollHeight, scrollTop, clientHeight } = event.target;
+
+		if (
+			new BigNumber(scrollTop).plus(clientHeight).isEqualTo(scrollHeight) &&
+			!loading &&
+			response?.next_page_url
+		)
+			setPage(page + 1);
+	};
+
 	return (
-		<div className={styles.mainContainer}>
+		<div className={styles.mainContainer} onScroll={onScroll}>
 			{loading ? (
 				<Loader />
 			) : response?.ids?.length > 0 ? (
