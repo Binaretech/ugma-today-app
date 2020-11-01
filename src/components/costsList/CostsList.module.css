@@ -1,0 +1,26 @@
+.wrapper {
+	width: 100%;
+	padding: 20px 0px;
+}
+
+.mainContainer {
+	display: flex;
+	justify-content: space-evenly;
+	flex-direction: row;
+	flex-wrap: wrap;
+	overflow-y: scroll;
+	height: fit-content;
+	max-height: 300px;
+}
+
+.mainContainer > div {
+	margin-top: 10px;
+	margin-bottom: 10px;
+	margin-right: 10px;
+}
+
+.emptyResults {
+	width: 100%;
+	display: flex;
+	justify-content: center;
+}
