@@ -7,23 +7,21 @@ import routes from './routeList';
 import Root from '../components/root/Root';
 
 function Routes() {
-  const userId = useSelector((state) => state.sessionReducer?.id);
+	const userId = useSelector((state) => state.sessionReducer?.id);
 
-  return (
-    <Router>
-      <Suspense fallback={<Loader fullscreen />}>
-        <Root>
-          <Switch>
-            {
-              routes(userId).map((route) => (
-                <Route {...route} key={route.path} />
-              ))
-            }
-          </Switch>
-        </Root>
-      </Suspense>
-    </Router>
-  );
+	return (
+		<Router>
+			<Suspense fallback={<Loader fullscreen />}>
+				<Root>
+					<Switch>
+						{routes(userId).map((route) => (
+							<Route {...route} key={route.path} />
+						))}
+					</Switch>
+				</Root>
+			</Suspense>
+		</Router>
+	);
 }
 
 export default Routes;
