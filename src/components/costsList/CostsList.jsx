@@ -49,6 +49,7 @@ function CostsList() {
 							name={cost?.name}
 							price={cost?.price}
 							comment={cost?.comment}
+							currencyName={cost?.currencyName}
 							key={id}
 						/>
 					);

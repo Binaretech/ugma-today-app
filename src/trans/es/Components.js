@@ -19,4 +19,7 @@ export default {
 	costsList: {
 		emptyResults: 'No hay resultados disponibles',
 	},
+	cardCost: {
+		detailsButton: 'Ver más',
+	},
 };
