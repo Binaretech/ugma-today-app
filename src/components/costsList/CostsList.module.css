@@ -8,8 +8,9 @@
 	justify-content: space-evenly;
 	flex-direction: row;
 	flex-wrap: wrap;
-	height: 40vh;
 	overflow-y: scroll;
+	height: fit-content;
+	max-height: 300px;
 }
 
 .mainContainer > div {

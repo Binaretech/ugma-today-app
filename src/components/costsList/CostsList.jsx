@@ -10,6 +10,7 @@ import BigNumber from 'bignumber.js';
 function CostsList() {
 	const [page, setPage] = useState(1);
 	const [loading, setLoading] = useState(true);
+	const [scrollLoading, setScrollLoading] = useState(false);
 	const [response, setResponse] = useState({
 		ids: [],
 		data: {},
@@ -34,7 +35,10 @@ function CostsList() {
 				}));
 			})
 			.catch(console.error)
-			.finally(() => setLoading(false));
+			.finally(() => {
+				setLoading(false);
+				setScrollLoading(false);
+			});
 	}, [page]);
 
 	const onScroll = (event) => {
@@ -44,32 +48,39 @@ function CostsList() {
 			new BigNumber(scrollTop).plus(clientHeight).isEqualTo(scrollHeight) &&
 			!loading &&
 			response?.next_page_url
-		)
-			setPage(page + 1);
+		) {
+			setPage(response?.current_page + 1);
+			setScrollLoading(true);
+		}
 	};
 
 	return (
 		<div className={styles.mainContainer} onScroll={onScroll}>
 			{loading ? (
 				<Loader />
-			) : response?.ids?.length > 0 ? (
-				response?.ids?.map((id) => {
-					const cost = response?.data[id];
-					return (
-						<CardCost
-							id={id}
-							name={cost?.name}
-							price={cost?.price}
-							comment={cost?.comment}
-							currencyName={cost?.currencyName}
-							key={id}
-						/>
-					);
-				})
 			) : (
-				<div className={styles.emptyResults}>
-					<p>{trans('Components.costsList.emptyResults')}</p>
-				</div>
+				<>
+					{response?.ids?.length > 0 ? (
+						response?.ids?.map((id) => {
+							const cost = response?.data[id];
+							return (
+								<CardCost
+									id={id}
+									name={cost?.name}
+									price={cost?.price}
+									comment={cost?.comment}
+									currencyName={cost?.currencyName}
+									key={id}
+								/>
+							);
+						})
+					) : (
+						<div className={styles.emptyResults}>
+							<p>{trans('Components.costsList.emptyResults')}</p>
+						</div>
+					)}
+					{scrollLoading && <Loader />}
+				</>
 			)}
 		</div>
 	);
