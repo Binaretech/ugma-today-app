@@ -1,0 +1,19 @@
+.container {
+	height: 80vh;
+	width: 80vw;
+	display: flex;
+}
+
+.form {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+}
+
+.form > div {
+	margin: 10px 0;
+	width: 50%;
+	min-width: 200px;
+}

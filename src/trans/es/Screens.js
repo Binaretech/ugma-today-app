@@ -5,4 +5,7 @@ export default {
 	ListCosts: {
 		rowsPerPage: 'Registros por página',
 	},
+	Register: {
+		registerButton: 'Registrarse',
+	},
 };
