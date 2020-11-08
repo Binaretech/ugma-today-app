@@ -21,6 +21,7 @@ import { ListItemLink } from '../listItemLink/ListItemLink';
 import { useHistory } from 'react-router-dom';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { trans } from '../../trans/trans';
+import { useSelector } from 'react-redux';
 import styles from './Scaffold.module.css';
 
 const drawerWidth = 240;
@@ -102,7 +103,7 @@ export default function Scaffold(props) {
 	const theme = useTheme();
 	const [open, setOpen] = React.useState(false);
 	const history = useHistory();
-
+	const userId = useSelector((state) => state.sessionReducer?.id);
 	const handleDrawerOpen = () => {
 		setOpen(true);
 	};

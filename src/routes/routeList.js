@@ -21,11 +21,11 @@ export default (id) => {
 };
 
 const publicRoutes = [
-	// {
-	// 	path: paths.login,
-	// 	exact: true,
-	// 	component: Login,
-	// },
+	{
+		path: paths.login,
+		exact: true,
+		component: Login,
+	},
 	{
 		path: paths.home,
 		exact: true,
