@@ -22,6 +22,8 @@ import { useHistory } from 'react-router-dom';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { trans } from '../../trans/trans';
 import { useSelector } from 'react-redux';
+import { setLogout } from '../../redux/actions/sessionActions';
+import { useDispatch } from 'react-redux';
 import styles from './Scaffold.module.css';
 
 const drawerWidth = 240;
@@ -102,6 +104,7 @@ export default function Scaffold(props) {
 	const classes = useStyles();
 	const theme = useTheme();
 	const [open, setOpen] = React.useState(false);
+	const dispatch = useDispatch();
 	const history = useHistory();
 	const userId = useSelector((state) => state.sessionReducer?.id);
 	const handleDrawerOpen = () => {
@@ -111,6 +114,11 @@ export default function Scaffold(props) {
 	const handleDrawerClose = () => {
 		setOpen(false);
 	};
+
+	function logout() {
+		dispatch(setLogout());
+		history.push(paths.home);
+	}
 
 	return (
 		<div className={classes.root}>
@@ -136,12 +144,26 @@ export default function Scaffold(props) {
 					</Typography>
 				</Toolbar>
 				<div className={classes.linksContainer} id={styles.linksContainer}>
-					<Link component="button" onClick={() => history.push(paths.login)}>
-						{trans('Components.scaffold.login')}
-					</Link>
-					<Link component="button" onClick={() => history.push(paths.register)}>
-						{trans('Components.scaffold.register')}
-					</Link>
+					{!userId ? (
+						<>
+							<Link
+								component="button"
+								onClick={() => history.push(paths.login)}
+							>
+								{trans('Components.scaffold.login')}
+							</Link>
+							<Link
+								component="button"
+								onClick={() => history.push(paths.register)}
+							>
+								{trans('Components.scaffold.register')}
+							</Link>
+						</>
+					) : (
+						<Link component="button" onClick={() => logout()}>
+							{trans('Components.scaffold.logOut')}
+						</Link>
+					)}
 				</div>
 			</AppBar>
 			<Drawer
@@ -164,7 +186,7 @@ export default function Scaffold(props) {
 				</div>
 				<Divider />
 				<List>
-					{drawerContent.map((list, index) => (
+					{drawerContent(userId).map((list, index) => (
 						<React.Fragment key={index}>
 							{list.map((content) => (
 								<ListItemLink key={content.title} to={content.to}>

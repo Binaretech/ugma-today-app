@@ -15,7 +15,7 @@ import { trans } from '../../trans/trans';
 import styles from './Register.module.css';
 
 function Register() {
-	const [loading] = useState(false);
+	const [loading, setLoading] = useState(false);
 	const inputValues = {};
 	const manager = useDataManager(inputValues);
 	const dispatch = useDispatch();
@@ -29,14 +29,17 @@ function Register() {
 	function onSubmit() {
 		if (manager.hasErrors()) return;
 
+		setLoading(true);
 		send({
 			body: { ...manager.getData() },
 		})
 			.then((res) => {
+				setLoading(false);
 				dispatch(setLogin(res.data));
 				history.push(paths.home);
 			})
 			.catch((err) => {
+				setLoading(false);
 				dispatch(snackbarMessage(err.message));
 				console.error(err);
 			});
@@ -92,6 +95,23 @@ function Register() {
 						setValue={manager.setValue}
 						setError={manager.setError}
 					/>
+					<Input
+						label={trans('words.confirmPassword')}
+						name="password_confirmation"
+						type="password"
+						variant="outlined"
+						value={inputValues.password}
+						rules={[
+							'required',
+							{
+								message: trans('Screens.Register.confirmPassword'),
+								validation: (value) =>
+									confirmedPassword(value, manager.getData()?.password),
+							},
+						]}
+						setValue={manager.setValue}
+						setError={manager.setError}
+					/>
 					<Button variant="contained" onClick={onSubmit}>
 						{trans('Screens.Register.registerButton')}
 					</Button>
@@ -102,3 +122,7 @@ function Register() {
 }
 
 export default Register;
+
+function confirmedPassword(value, valueToConfirm) {
+	return value === valueToConfirm;
+}

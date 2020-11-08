@@ -5,27 +5,31 @@ import PersonIcon from '@material-ui/icons/Person';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import paths from '../../routes/paths';
 
-export default [
+export default (userId) => [
 	[
 		{
 			title: trans('Components.drawer.home'),
 			icon: HomeIcon,
 			to: paths.home,
 		},
-		{
-			title: trans('Components.scaffold.login'),
-			icon: PersonIcon,
-			to: paths.login,
-		},
-		{
-			title: trans('Components.scaffold.register'),
-			icon: PersonAddIcon,
-			to: paths.register,
-		},
+		...(!userId ? hideAfterLogin : []),
 		// {
 		//     title: trans('Components.drawer.listPrices'),
 		//     icon: MonetizationOnIcon,
 		//     to: paths.costList
 		// },
 	],
+];
+
+const hideAfterLogin = [
+	{
+		title: trans('Components.scaffold.login'),
+		icon: PersonIcon,
+		to: paths.login,
+	},
+	{
+		title: trans('Components.scaffold.register'),
+		icon: PersonAddIcon,
+		to: paths.register,
+	},
 ];

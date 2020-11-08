@@ -6,4 +6,3 @@ export default {
 	max: 'Debe ser de maximo :0 caracteres',
 	email: 'No es un correo electrónico válido.',
 };
-

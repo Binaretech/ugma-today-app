@@ -7,5 +7,6 @@ export default {
 	},
 	Register: {
 		registerButton: 'Registrarse',
+		confirmPassword: 'Las contraseñas no coinciden',
 	},
 };

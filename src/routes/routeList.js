@@ -8,7 +8,6 @@ const Register = lazy(() => import('../screens/register/Register'));
 // const ListCosts = lazy(() => import('../screens/listCosts/ListCosts'));
 
 export default (id) => {
-	console.log(id);
 	return [
 		...publicRoutes,
 		...(!id ? hideAfterLogin : []),
