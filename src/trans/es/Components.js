@@ -14,7 +14,7 @@ export default {
 		title: 'Ugma Today',
 		login: 'Iniciar sesión',
 		register: 'Registrarse',
-		logOut: 'Cerrar sesión',
+		logout: 'Cerrar sesión',
 	},
 	createCost: {
 		createPrice: 'Registrar nuevo precio',

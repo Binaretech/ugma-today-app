@@ -22,8 +22,7 @@ import { useHistory } from 'react-router-dom';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { trans } from '../../trans/trans';
 import { useSelector } from 'react-redux';
-import { setLogout } from '../../redux/actions/sessionActions';
-import { useDispatch } from 'react-redux';
+import { useLogout } from '../../utils/customHooks';
 import styles from './Scaffold.module.css';
 
 const drawerWidth = 240;
@@ -104,8 +103,8 @@ export default function Scaffold(props) {
 	const classes = useStyles();
 	const theme = useTheme();
 	const [open, setOpen] = React.useState(false);
-	const dispatch = useDispatch();
 	const history = useHistory();
+	const logout = useLogout();
 	const userId = useSelector((state) => state.sessionReducer?.id);
 	const handleDrawerOpen = () => {
 		setOpen(true);
@@ -114,11 +113,6 @@ export default function Scaffold(props) {
 	const handleDrawerClose = () => {
 		setOpen(false);
 	};
-
-	function logout() {
-		dispatch(setLogout());
-		history.push(paths.home);
-	}
 
 	return (
 		<div className={classes.root}>
@@ -161,7 +155,7 @@ export default function Scaffold(props) {
 						</>
 					) : (
 						<Link component="button" onClick={() => logout()}>
-							{trans('Components.scaffold.logOut')}
+							{trans('Components.scaffold.logout')}
 						</Link>
 					)}
 				</div>
@@ -189,7 +183,11 @@ export default function Scaffold(props) {
 					{drawerContent(userId).map((list, index) => (
 						<React.Fragment key={index}>
 							{list.map((content) => (
-								<ListItemLink key={content.title} to={content.to}>
+								<ListItemLink
+									key={content.title}
+									to={content.to}
+									action={content.action}
+								>
 									<ListItemIcon>
 										<content.icon.type />
 									</ListItemIcon>

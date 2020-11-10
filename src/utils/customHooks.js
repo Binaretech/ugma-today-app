@@ -4,6 +4,9 @@ import { trans } from '../trans/trans';
 import { useSelector, useDispatch } from 'react-redux';
 import { organizeMessage } from './array';
 import { cleanError } from '../redux/actions/requestActions';
+import { setLogout } from '../redux/actions/sessionActions';
+import { useHistory } from 'react-router-dom';
+import paths from '../routes/paths';
 
 /**
  * ```useDataManager``` returns a reference to an object of data, a object of errors and a function to
@@ -177,3 +180,16 @@ export function useErrorMessage(name, aditionalMessages = []) {
 	return message;
 }
 
+/**
+ * Custom hook to dispatch logout action
+ * @returns function
+ */
+export function useLogout() {
+	const history = useHistory();
+	const dispatch = useDispatch();
+
+	return () => {
+		dispatch(setLogout());
+		history.push(paths.home);
+	};
+}
