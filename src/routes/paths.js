@@ -3,4 +3,5 @@ export default {
 	login: '/login',
 	createCost: '/create-cost',
 	costList: '/cost-list',
+	register: '/register',
 };

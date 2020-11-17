@@ -4,8 +4,9 @@ export default {
 	add: 'Añadir',
 	//    B
 
-  //    D
+	//    D
 	//    C
+	confirmPassword: 'Confirmar contraseña',
 	connectionError: 'Error de conexión',
 	comment: 'Comentario',
 	currency: 'Moneda',
@@ -15,6 +16,7 @@ export default {
 
 	//    E
 	edit: 'Editar',
+	email: 'Correo electrónico',
 
 	//    F
 
@@ -29,6 +31,7 @@ export default {
 	//    K
 
 	//    L
+	lastname: 'Apellido',
 
 	//    M
 	modifiedBy: 'Modificado por',

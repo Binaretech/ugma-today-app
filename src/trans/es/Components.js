@@ -12,6 +12,9 @@ export default {
 	},
 	scaffold: {
 		title: 'Ugma Today',
+		login: 'Iniciar sesión',
+		register: 'Registrarse',
+		logout: 'Cerrar sesión',
 	},
 	createCost: {
 		createPrice: 'Registrar nuevo precio',
