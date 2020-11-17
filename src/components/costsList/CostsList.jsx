@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import Loader from '../../components/loader/Loader';
 import CardCost from '../../components/cardCost/CardCost';
@@ -42,6 +43,8 @@ function CostsList() {
 	}, [page]);
 
 	const onScroll = (event) => {
+		if (!event?.target) return;
+
 		const { scrollHeight, scrollTop, clientHeight } = event.target;
 
 		if (
