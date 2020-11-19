@@ -6,7 +6,10 @@ import { organizeMessage } from './array';
 import { cleanError } from '../redux/actions/requestActions';
 import { setLogout } from '../redux/actions/sessionActions';
 import { useHistory } from 'react-router-dom';
+import { useXhr } from '../utils/xhr/hook';
 import paths from '../routes/paths';
+import apiEndpoints from '../apiEndpoints';
+import { snackbarMessage } from '../redux/actions/snackbarActions';
 
 /**
  * ```useDataManager``` returns a reference to an object of data, a object of errors and a function to
@@ -187,9 +190,26 @@ export function useErrorMessage(name, aditionalMessages = []) {
 export function useLogout() {
 	const history = useHistory();
 	const dispatch = useDispatch();
+	const [send] = useXhr({
+		url: apiEndpoints.logout,
+	});
 
 	return () => {
-		dispatch(setLogout());
-		history.push(paths.home);
+		send({
+			showErrorSnackbar: true,
+			showSucessSnackbar: true,
+		})
+			.then(() => {
+				dispatch(setLogout());
+				history.push(paths.home);
+			})
+			.catch((err) => {
+				console.error('Error: ', err);
+				dispatch(
+					snackbarMessage(
+						err?.message || trans('Components.snackbar.errorMessage')
+					)
+				);
+			});
 	};
 }
