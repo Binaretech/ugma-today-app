@@ -192,6 +192,7 @@ export function useLogout() {
 	const dispatch = useDispatch();
 	const [send] = useXhr({
 		url: apiEndpoints.logout,
+		method: 'DELETE',
 	});
 
 	return () => {
