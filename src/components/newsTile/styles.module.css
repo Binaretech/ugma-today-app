@@ -1,0 +1,39 @@
+.card {
+	padding: 1rem;
+	width: 100%;
+}
+
+.info {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding-top: 1rem;
+}
+
+.scores {
+	display: flex;
+	align-items: center;
+}
+
+.score {
+	display: flex;
+	align-items: center;
+	padding: 0 0.3rem;
+}
+
+.score p {
+	padding: 0 0.5rem;
+}
+
+.title{
+	text-align: center;
+}
+
+.author{
+	display: flex;
+	align-items: center;
+}
+
+.author p{
+	padding-left: 1rem;
+}

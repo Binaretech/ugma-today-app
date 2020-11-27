@@ -3,6 +3,7 @@ import Login from './Login';
 import { render, fireEvent, screen } from '../../utils/test-utils';
 import store from '../../redux/store';
 import { Provider } from 'react-redux';
+import { BrowserRouter as Router } from 'react-router-dom';
 import { trans } from '../../trans/trans';
 import renderer from 'react-test-renderer';
 import apiEndpoints from '../../apiEndpoints';
@@ -29,7 +30,9 @@ jest.spyOn(XMLHttpRequest.prototype, 'send').mockImplementation(() => {
 
 const loginComponentWithProvider = () => (
 	<Provider store={store()}>
-		<Login />
+		<Router>
+			<Login />
+		</Router>
 	</Provider>
 );
 
@@ -77,7 +80,11 @@ describe('Login', () => {
 	});
 
 	test('should fire login button click event', async () => {
-		render(<Login />);
+		render(
+			<Router>
+				<Login />
+			</Router>
+		);
 
 		fireEvent.click(screen.getByText(trans('Screens.Login.loginButton')));
 
