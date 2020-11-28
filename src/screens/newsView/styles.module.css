@@ -1,19 +1,17 @@
-.loader {
+.loaderContainer{
 	display: flex;
 	justify-content: center;
-	align-items: center;
 	height: calc(100vh - 110px);
 	align-items: center;
 }
 
-.container {
+.comments {
+	padding-top: 0.5rem;
 	display: flex;
 	flex-direction: column;
-	width: 100%;
-	align-items: center;
+	align-items: flex-end;
 }
 
-.container li {
-	width: 90%;
+.comments .comment {
+	width: 95%;
 }
-

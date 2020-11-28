@@ -6,17 +6,17 @@ import { List, ListItem } from "@material-ui/core";
 import styles from "./styles.module.css";
 
 export default function News() {
-  const [loading, posts] = useFetchNews();
+  const [loading, news] = useFetchNews();
 
   return loading ? (
-    <div>
+    <div className={styles.loader}>
       <Loader />
     </div>
   ) : (
     <List className={styles.container}>
-      {posts.map((post) => (
-        <ListItem>
-          <NewsTile key={post.id} post={post} />
+      {news.map((item) => (
+        <ListItem key={item.id}>
+          <NewsTile news={item} />
         </ListItem>
       ))}
     </List>

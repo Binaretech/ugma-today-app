@@ -1,4 +1,4 @@
-export default {
+const path = {
   home: "/",
   login: "/login",
   createCost: "/create-cost",
@@ -6,4 +6,15 @@ export default {
   register: "/register",
   posts: "/posts",
   news: "/news",
+  newsDetails: "/news/:id",
 };
+
+export default path;
+
+export function formatPath(path, params = {}) {
+  Object.keys(params).forEach((key) => {
+    path = path.replace(`:${key}`, params[key]);
+  });
+
+  return path;
+}

@@ -1,4 +1,4 @@
-export default {
+const endpoints = {
   cost: {
     store: {
       method: "POST",
@@ -19,6 +19,15 @@ export default {
       method: "GET",
       url: "/news",
       showErrorSnackbar: true,
+      queryParams: {
+        withTimestamps: true,
+      },
+    },
+    show: {
+      method: "GET",
+      url: "/news/:id",
     },
   },
 };
+
+export default endpoints;

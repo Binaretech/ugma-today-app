@@ -1,35 +1,46 @@
 import React from "react";
 import { Avatar, Card } from "@material-ui/core";
+import ReactMarkdown from "react-markdown";
 import styles from "./styles.module.css";
-import ThumbUpAltIcon from "@material-ui/icons/ThumbUpAltOutlined";
-import InsertCommentOutlinedIcon from "@material-ui/icons/InsertCommentOutlined";
+import dayjs from "dayjs";
+import { useHistory } from "react-router-dom";
+import paths, { formatPath } from "../../routes/paths";
+import LikesAndComments from "../../components/likesAndComments";
 
 /**
  * @typedef {object} Post
  * @prop {string} title
  *
- * @param {{post: Post}} props
+ * @param {{news: Post}} props
  */
-export default function NewsTile({ post }) {
+export default function NewsTile({ news }) {
+  const history = useHistory();
+
+  function onClick() {
+    history.push(formatPath(paths.newsDetails, { id: news?.id }));
+  }
+
   return (
-    <Card className={styles.card}>
+    <Card className={styles.card} onClick={onClick}>
       <div className={styles.title}>
-        <h2>{post?.title}</h2>
+        <h2>{news?.title}</h2>
+      </div>
+      <div>
+        <ReactMarkdown skipHtml>
+          {news?.isCutted ? news?.preview?.trim() + "..." : news?.preview}
+        </ReactMarkdown>
+      </div>
+      <div className={styles.author}>
+        <Avatar src={news?.user?.profileImage} />
+        <p className={styles.name}>{news?.user?.username}</p>
       </div>
       <div className={styles.info}>
-        <div className={styles.scores}>
-          <div className={styles.score}>
-            <ThumbUpAltIcon />
-            <p>{post?.likes ?? 0}</p>
-          </div>
-          <div className={styles.score}>
-            <InsertCommentOutlinedIcon />
-            <p>{post?.comments ?? 0}</p>
-          </div>
-        </div>
-        <div className={styles.author}>
-          <Avatar src={post?.user?.profileImage} />
-          <p>{post?.user?.username}</p>
+        <LikesAndComments
+          likesCount={news?.likes}
+          commentsCount={news?.comments}
+        />
+        <div>
+          <p className={styles.timestamp}>{dayjs(news?.createdAt).fromNow()}</p>
         </div>
       </div>
     </Card>

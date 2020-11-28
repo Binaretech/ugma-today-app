@@ -32,8 +32,16 @@
 .author{
 	display: flex;
 	align-items: center;
+	padding-top: 0.5rem;
+	justify-content: flex-end;
 }
 
-.author p{
-	padding-left: 1rem;
+.author .name{
+	padding: 0 1rem;
+	font-size: 1.1rem;
+}
+
+.timestamp {
+	font-size: 0.8rem;
+	text-align: right;
 }

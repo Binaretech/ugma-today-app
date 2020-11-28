@@ -6,8 +6,9 @@ const NotFound = lazy(() => import("../screens/notFound/NotFound"));
 const Home = lazy(() => import("../screens/home/Home"));
 const Register = lazy(() => import("../screens/register/Register"));
 const News = lazy(() => import("../screens/news"));
+const NewsView = lazy(() => import("../screens/newsView"));
 
-export default (id) => {
+const routes = (id) => {
   return [
     ...publicRoutes,
     ...(!id ? hideAfterLogin : []),
@@ -19,6 +20,8 @@ export default (id) => {
   ];
 };
 
+export default routes;
+
 const publicRoutes = [
   {
     path: paths.home,
@@ -29,6 +32,11 @@ const publicRoutes = [
     path: paths.news,
     exact: true,
     component: News,
+  },
+  {
+    path: paths.newsDetails,
+    exact: true,
+    component: NewsView,
   },
 ];
 
