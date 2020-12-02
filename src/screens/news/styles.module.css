@@ -1,0 +1,19 @@
+.loader {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: calc(100vh - 110px);
+	align-items: center;
+}
+
+.container {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	align-items: center;
+}
+
+.container li {
+	width: 90%;
+}
+

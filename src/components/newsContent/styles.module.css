@@ -1,0 +1,39 @@
+.card {
+	padding: 2rem;
+}
+
+.title {
+	text-align: center;
+	padding-bottom: 1rem;
+}
+
+.author {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	padding-bottom: 1rem;
+}
+
+.author p {
+	padding: 0 1rem;
+}
+
+.timestamp{
+	text-align: right;
+}
+
+.newsFooter{
+	padding-top: 2rem;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.scores, .score{
+	display: flex;
+	align-items: center;
+}
+
+.score, .score p{
+	padding: 0 0.5rem;
+}

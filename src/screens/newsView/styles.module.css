@@ -1,0 +1,17 @@
+.loaderContainer{
+	display: flex;
+	justify-content: center;
+	height: calc(100vh - 110px);
+	align-items: center;
+}
+
+.comments {
+	padding-top: 0.5rem;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+}
+
+.comments .comment {
+	width: 95%;
+}

@@ -1,0 +1,27 @@
+.commentAuthor p {
+	padding: 0 1rem;
+}
+
+.timestamp{
+	padding-top: 1rem;
+	text-align: right;
+}
+
+.comment {
+	margin: 0.5rem 0;
+	padding: 1rem;	
+}
+
+.commentAuthor{
+	align-items: center;
+	display: flex;
+	justify-content: flex-start;
+	padding-bottom: 1rem;
+}
+
+.footer {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding-top: 1rem;
+}
