@@ -36,6 +36,7 @@ export default function NewsTile({ news }) {
       </div>
       <div className={styles.info}>
         <LikesAndComments
+          likedByUser={news?.likedByUser}
           likesCount={news?.likes}
           commentsCount={news?.comments}
         />

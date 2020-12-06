@@ -1,13 +1,46 @@
-import { useState } from "react";
+import { useReducer, useState } from "react";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useXhr } from "../../utils/xhr/hook";
 import requests from "../../utils/xhr/requests";
 
-export function useFetchNews() {
+export const actions = {
+  SET_NEWS: "SET_NEWS",
+  ADD_LIKE: "ADD_LIKE",
+  REMOVE_LIKE: "REMOVE_LIKE",
+};
+
+/**
+ * @param {object} state
+ * @param {{type, news?}} action
+ *
+ * @return {object}
+ */
+export function reducer(state = {}, action) {
+  switch (action.type) {
+    case actions.SET_NEWS:
+      return action.news;
+    case actions.ADD_LIKE:
+      return {
+        ...state,
+        likedByUser: true,
+        likesCount: state.likesCount + 1,
+      };
+    case actions.REMOVE_LIKE:
+      return {
+        ...state,
+        likedByUser: false,
+        likesCount: state.likesCount - 1,
+      };
+    default:
+      return state;
+  }
+}
+
+export function useHandleNews() {
   const { id } = useParams();
   const [loading, setLoading] = useState(false);
-  const [news, setNews] = useState({});
+  const [news, dispatch] = useReducer(reducer, {});
   const [send] = useXhr(requests.news.show);
 
   useEffect(() => {
@@ -22,7 +55,7 @@ export function useFetchNews() {
     })
       .then((response) => {
         setLoading(false);
-        setNews(response.data);
+        dispatch({ type: actions.SET_NEWS, news: response.data });
       })
       .catch(() => {
         setLoading(false);
@@ -30,5 +63,5 @@ export function useFetchNews() {
     // eslint-disable-next-line
   }, [id]);
 
-  return [loading, news];
+  return [loading, news, dispatch];
 }

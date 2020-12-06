@@ -2,11 +2,12 @@ import React from "react";
 import Loader from "../../components/loader/Loader";
 import NewsContent from "../../components/newsContent";
 import Comment from "../../components/comment";
-import { useFetchNews } from "./function";
+import { useHandleNews } from "./function";
+import CommentBox from "../../components/commentBox/commentBox";
 import styles from "./styles.module.css";
 
 export default function NewsView() {
-  const [loading, news] = useFetchNews();
+  const [loading, news, dispatch] = useHandleNews();
 
   return loading ? (
     <div className={styles.loaderContainer}>
@@ -14,7 +15,7 @@ export default function NewsView() {
     </div>
   ) : (
     <div>
-      <NewsContent news={news} />
+      <NewsContent news={news} dispatch={dispatch} />
       <div className={styles.comments}>
         {news?.comments?.map((comment) => (
           <Comment
@@ -23,6 +24,9 @@ export default function NewsView() {
             comment={comment}
           />
         ))}
+        <div className={styles.add_comment}>
+          <CommentBox />
+        </div>
       </div>
     </div>
   );
