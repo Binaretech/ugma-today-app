@@ -23,6 +23,11 @@ const endpoints = {
       url: "/post/unlike/:id",
       showErrorSnackbar: true,
     },
+    comment: {
+      method: "POST",
+      url: "/post/:id/comment",
+      showErrorSnackbar: true,
+    },
   },
   news: {
     index: {

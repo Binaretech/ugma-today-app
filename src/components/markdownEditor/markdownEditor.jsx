@@ -1,17 +1,14 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, memo } from "react";
 import MarkDown from "react-markdown";
 import styles from "./styles.module.css";
 import FormatItalicIcon from "@material-ui/icons/FormatItalic";
-import FormatUnderlinedIcon from "@material-ui/icons/FormatUnderlined";
 import FormatBoldIcon from "@material-ui/icons/FormatBold";
 import FormatListNumberedIcon from "@material-ui/icons/FormatListNumbered";
 import FormatListBulletedIcon from "@material-ui/icons/FormatListBulleted";
-import ImageIcon from "@material-ui/icons/Image";
-import LinkIcon from "@material-ui/icons/Link";
 import { Divider, IconButton } from "@material-ui/core";
 import { useTextEdit } from "./functions.js";
 
-export default function MarkDownEditor() {
+function MarkDownEditor(props) {
   const [
     value,
     textarea,
@@ -20,8 +17,13 @@ export default function MarkDownEditor() {
     onItalic,
     onOrderedList,
     onUnOrderedList,
-  ] = useTextEdit();
+  ] = useTextEdit(props.value);
   const preview = useRef();
+
+  useEffect(() => {
+    props?.onChange(value);
+    // eslint-disable-next-line
+  }, [value]);
 
   function onScroll(event) {
     preview.current.scrollTop = event.target.scrollTop;
@@ -44,7 +46,12 @@ export default function MarkDownEditor() {
         </IconButton>
       </div>
       <div className={styles.editor}>
-        <textarea ref={textarea} onChange={onChange} onScroll={onScroll} />
+        <textarea
+          ref={textarea}
+          onChange={onChange}
+          onScroll={onScroll}
+          value={value}
+        />
         <Divider orientation="vertical" />
         <div className={styles.preview} ref={preview}>
           <MarkDown>{value}</MarkDown>
@@ -53,3 +60,9 @@ export default function MarkDownEditor() {
     </div>
   );
 }
+
+MarkDownEditor.defaultProps = {
+  value: "",
+};
+
+export default MarkDownEditor;

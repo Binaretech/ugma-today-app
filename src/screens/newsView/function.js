@@ -8,11 +8,12 @@ export const actions = {
   SET_NEWS: "SET_NEWS",
   ADD_LIKE: "ADD_LIKE",
   REMOVE_LIKE: "REMOVE_LIKE",
+  ADD_COMMENT: "ADD_COMMENT",
 };
 
 /**
  * @param {object} state
- * @param {{type, news?}} action
+ * @param {{type, news?, payload?}} action
  *
  * @return {object}
  */
@@ -32,9 +33,35 @@ export function reducer(state = {}, action) {
         likedByUser: false,
         likesCount: state.likesCount - 1,
       };
+    case action.ADD_COMMENT:
+      return {
+        ...state,
+        comments: [...state.comments, action.payload],
+      };
     default:
       return state;
   }
+}
+
+export function useHandleComment(dispatch) {
+  const { id } = useParams();
+  const [loading, setLoading] = useState(false);
+  const [send] = useXhr({ ...requests.post.comment, ...{ params: { id } } });
+
+  async function comment(value) {
+    setLoading(true);
+
+    let response = await send({ body: { comment: value } });
+
+    dispatch({
+      action: actions.ADD_COMMENT,
+      payload: response.data,
+    });
+
+    setLoading(false);
+  }
+
+  return [comment, loading];
 }
 
 export function useHandleNews() {

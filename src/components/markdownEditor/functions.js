@@ -1,18 +1,26 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useState } from "react";
 
-export function useTextEdit() {
-  const [value, setValue] = useState("");
+export function useTextEdit(propsValue) {
+  const [value, setValue] = useState(propsValue);
+  const [move, setMove] = useState(0);
+
+  useEffect(() => {
+    setValue(propsValue);
+  }, [propsValue]);
+
+  useEffect(() => {
+    moveCursor(move);
+  }, [move]);
+
   const textarea = useRef(null);
 
-  function moveCursor(pos, value) {
+  function moveCursor(pos) {
     textarea.current.focus();
-    textarea.current.value = value;
     textarea.current.setSelectionRange(pos, pos);
   }
 
   function insertString(value, cursor, string) {
-    console.log(value);
     return value.slice(0, cursor) + string + value.slice(cursor);
   }
 
@@ -25,7 +33,7 @@ export function useTextEdit() {
     const newValue = insertString(value, cursor, "****");
     setValue(newValue);
 
-    moveCursor(cursor + 2, newValue);
+    setMove(cursor + 2);
   }
 
   function onItalic() {
@@ -33,21 +41,24 @@ export function useTextEdit() {
     const newValue = insertString(value, cursor, "**");
     setValue(newValue);
 
-    moveCursor(cursor + 1, newValue);
+    setMove(cursor + 2);
+    moveCursor(cursor + 1);
   }
 
   function onOrderedList() {
     const cursor = textarea.current.selectionEnd;
     const newValue = insertString(value, cursor, "\n1. ");
     setValue(newValue);
-    moveCursor(cursor + 5, newValue);
+
+    moveCursor(cursor + 5);
   }
 
   function onUnOrderedList() {
     const cursor = textarea.current.selectionEnd;
     const newValue = insertString(value, cursor, "\n* ");
     setValue(newValue);
-    moveCursor(cursor + 4, newValue);
+
+    moveCursor(cursor + 4);
   }
 
   return [

@@ -3,12 +3,13 @@ import Loader from "../../components/loader/Loader";
 import NewsContent from "../../components/newsContent";
 import Comment from "../../components/comment";
 import { useHandleNews } from "./function";
+import { useHandleComment } from "./function";
 import CommentBox from "../../components/commentBox/commentBox";
 import styles from "./styles.module.css";
 
 export default function NewsView() {
   const [loading, news, dispatch] = useHandleNews();
-
+  const [comment, commentLoader] = useHandleComment(dispatch);
   return loading ? (
     <div className={styles.loaderContainer}>
       <Loader />
@@ -25,7 +26,7 @@ export default function NewsView() {
           />
         ))}
         <div className={styles.add_comment}>
-          <CommentBox />
+          <CommentBox onClick={comment} />
         </div>
       </div>
     </div>
