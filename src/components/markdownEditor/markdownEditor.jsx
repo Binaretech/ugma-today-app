@@ -21,7 +21,7 @@ function MarkDownEditor(props) {
   const preview = useRef();
 
   useEffect(() => {
-    props?.onChange(value);
+    props?.onChange?.(value);
     // eslint-disable-next-line
   }, [value]);
 
@@ -47,13 +47,18 @@ function MarkDownEditor(props) {
       </div>
       <div className={styles.editor}>
         <textarea
+          aria-label="markdown-field"
           ref={textarea}
           onChange={onChange}
           onScroll={onScroll}
           value={value}
         />
         <Divider orientation="vertical" />
-        <div className={styles.preview} ref={preview}>
+        <div
+          aria-label="markdown-preview"
+          className={styles.preview}
+          ref={preview}
+        >
           <MarkDown>{value}</MarkDown>
         </div>
       </div>
