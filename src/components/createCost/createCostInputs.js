@@ -23,55 +23,57 @@ import { currencies } from "../../static/currencies";
  * @param {Props} props
  */
 export default (data) => {
-    return [
-        [
-            {
-                type: Input,
-                props: {
-                    name: 'name',
-                    label: trans('words.name'),
-                    rules: ['required', 'string', 'min:4', 'max:128'],
-                    defaultValue: data?.name,
-                }
-            }
-        ],
-        [
-            {
-                type: Input,
-                props: {
-                    name: 'comment',
-                    label: trans('words.comment'),
-                    rules: ['nullable', 'string', 'min:4', 'max:128'],
-                    defaultValue: data?.comment,
-                }
-            }
-        ],
-        [
-            {
-                type: Input,
-                props: {
-                    name: 'currency',
-                    className: 'price-input',
-                    label: trans('words.currency'),
-                    displayEmpty: true,
-                    placeholder: trans('words.currency'),
-                    select: true,
-                    defaultValue: data?.currency ?
-                        currencies.find((currency) => currency.value === data.currency).value : '',
-                    options: currencies,
-                    rules: ['required'],
-                }
-            },
-            {
-                type: Input,
-                props: {
-                    name: 'price',
-                    type: 'number',
-                    defaultValue: data?.price,
-                    label: trans('words.price'),
-                    rules: ['required', 'number', 'min:0', 'max:9999999999999999,99'],
-                }
-            }
-        ],
-    ];
+  return [
+    [
+      {
+        type: Input,
+        props: {
+          name: "name",
+          label: trans("words.name"),
+          rules: ["required", "string", "min:4", "max:128"],
+          defaultValue: data?.name,
+        },
+      },
+    ],
+    [
+      {
+        type: Input,
+        props: {
+          name: "comment",
+          label: trans("words.commentary"),
+          rules: ["nullable", "string", "min:4", "max:128"],
+          defaultValue: data?.comment,
+        },
+      },
+    ],
+    [
+      {
+        type: Input,
+        props: {
+          name: "currency",
+          className: "price-input",
+          label: trans("words.currency"),
+          displayEmpty: true,
+          placeholder: trans("words.currency"),
+          select: true,
+          defaultValue: data?.currency
+            ? currencies.find((currency) => currency.value === data.currency)
+                .value
+            : "",
+          options: currencies,
+          rules: ["required"],
+        },
+      },
+      {
+        type: Input,
+        props: {
+          name: "price",
+          type: "number",
+          defaultValue: data?.price,
+          label: trans("words.price"),
+          rules: ["required", "number", "min:0", "max:9999999999999999,99"],
+        },
+      },
+    ],
+  ];
 };

@@ -13,6 +13,21 @@ const endpoints = {
       url: "/post",
       showErrorSnackbar: true,
     },
+    like: {
+      method: "POST",
+      url: "/post/like/:id",
+      showErrorSnackbar: true,
+    },
+    unlike: {
+      method: "POST",
+      url: "/post/unlike/:id",
+      showErrorSnackbar: true,
+    },
+    comment: {
+      method: "POST",
+      url: "/post/:id/comment",
+      showErrorSnackbar: true,
+    },
   },
   news: {
     index: {

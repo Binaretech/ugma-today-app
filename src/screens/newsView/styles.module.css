@@ -12,6 +12,11 @@
 	align-items: flex-end;
 }
 
-.comments .comment {
+.comments .comment, .add_comment {
 	width: 95%;
+}
+
+.centerLoader{
+	display: flex;
+	justify-content: center;
 }

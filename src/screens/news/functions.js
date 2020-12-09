@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
-import { useXhr } from "../../utils/xhr/hook";
-import requests from "../../utils/xhr/requests";
+import { useEffect, useState } from 'react';
+import { useXhr } from '../../utils/xhr/hook';
+import requests from '../../utils/xhr/requests';
 
 export function useFetchNews() {
   const [send] = useXhr(requests.news.index);
@@ -12,16 +12,14 @@ export function useFetchNews() {
     setLoading(true);
     send()
       .then((response) => {
-        console.log(response);
         setLoading(false);
         setPosts(
           response?.ids?.map((id) => {
             return response?.data?.[id];
-          }) ?? []
+          }) ?? [],
         );
       })
       .catch((e) => {
-        console.log(e);
         setLoading(false);
       });
     //eslint-disable-next-line

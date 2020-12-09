@@ -54,7 +54,6 @@ export function useXhr(params) {
       xhr.current.send(setBody(options));
       xhr.current.onload = () => {
         const response = getResponse(options, xhr.current);
-
         if (xhr.current.status >= 200 && xhr.current.status < 300) {
           resolve(
             options.responseType === "json"
