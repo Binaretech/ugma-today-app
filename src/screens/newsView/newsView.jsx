@@ -26,7 +26,7 @@ export default function NewsView() {
           />
         ))}
         <div className={styles.add_comment}>
-          <CommentBox onClick={comment} />
+					{commentLoader? <div className={styles.centerLoader}><Loader/></div> :<CommentBox onClick={comment} />}
         </div>
       </div>
     </div>
