@@ -3,7 +3,7 @@ import { useXhr } from '../../utils/xhr/hook';
 import requests from '../../utils/xhr/requests';
 
 export function useFetchNews() {
-  const [send] = useXhr(requests.news.index);
+  const [send] = useXhr({ ...requests.news.index, showErrorSnackbar: true });
 
   const [loading, setLoading] = useState(false);
   const [posts, setPosts] = useState([]);

@@ -9,10 +9,10 @@ const availableLanguages = {
 let language = 'es';
 
 /**
- * 
+ *
  * @param {string} translation
  * @param {object} attributes
- * @returns {string} 
+ * @returns {string}
  */
 export function trans(translation, attributes = {}) {
   let path = translation.split('.');
