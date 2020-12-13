@@ -1,14 +1,14 @@
-import { useReducer, useState } from "react";
-import { useEffect } from "react";
-import { useParams } from "react-router-dom";
-import { useXhr } from "../../utils/xhr/hook";
-import requests from "../../utils/xhr/requests";
+import { useReducer, useState } from 'react';
+import { useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import { useXhr } from '../../utils/xhr/hook';
+import requests from '../../utils/xhr/requests';
 
 export const actions = {
-  SET_NEWS: "SET_NEWS",
-  ADD_LIKE: "ADD_LIKE",
-  REMOVE_LIKE: "REMOVE_LIKE",
-  ADD_COMMENT: "ADD_COMMENT",
+  SET_NEWS: 'SET_NEWS',
+  ADD_LIKE: 'ADD_LIKE',
+  REMOVE_LIKE: 'REMOVE_LIKE',
+  ADD_COMMENT: 'ADD_COMMENT',
 };
 
 /**
@@ -68,7 +68,7 @@ export function useHandleNews() {
   const { id } = useParams();
   const [loading, setLoading] = useState(false);
   const [news, dispatch] = useReducer(reducer, {});
-  const [send] = useXhr(requests.news.show);
+  const [send, error] = useXhr(requests.news.show);
 
   useEffect(() => {
     setLoading(true);
@@ -90,5 +90,5 @@ export function useHandleNews() {
     // eslint-disable-next-line
   }, [id]);
 
-  return [loading, news, dispatch];
+  return [loading, news, dispatch, error];
 }
