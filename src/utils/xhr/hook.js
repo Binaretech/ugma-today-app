@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { defaultOptions } from './xhrConfig';
 import appBaseUrl from '../../configs';
 import { useHistory } from 'react-router-dom';
@@ -19,11 +19,14 @@ import { trans } from '../../trans/trans';
  * @prop {boolean} redirectUnauthorized
  * @prop {boolean} showSucessSnackbar
  * @prop {boolean} showErrorSnackbar
+ * @prop {boolean} showErrorView
  *
  * @param {Params} params
  */
-export function useXhr(params = {}) {
-  const config = { ...defaultOptions, ...params };
+export function useXhr(params) {
+  params = { ...defaultOptions, ...params };
+
+  const [error, setError] = useState(null);
   const xhr = useRef(new XMLHttpRequest());
   const history = useHistory();
   const dispatch = useDispatch();
@@ -42,8 +45,9 @@ export function useXhr(params = {}) {
    * @returns {Promise<any>}
    */
   function send(options = {}) {
-    options = { ...config, ...options };
-    abort();
+    options = { ...params, ...options };
+
+    xhr.current.abort();
 
     return new Promise((resolve, reject) => {
       xhr.current.open(options.method, formatUrl(options), true);
@@ -77,26 +81,45 @@ export function useXhr(params = {}) {
           return;
         }
 
-        if (options.showErrorSnackbar)
+        if (options.showErrorSnackbar) {
           errorSnackbar(dispatch, response?.data?.message || response?.message);
+        }
 
-        if (xhr.current.status === 401 && options.redirectUnauthorized)
+        if (xhr.current.status === 401 && options.redirectUnauthorized) {
           history.push(paths.login);
+          return reject({ ...response, status: xhr.current.status });
+        }
+
+        setError({
+          status: xhr.current.status,
+          message: response?.data?.message || response?.message,
+        });
 
         return reject({ ...response, status: xhr.current.status });
       };
 
-      xhr.current.onerror = () =>
+      xhr.current.onerror = () => {
+        setError({
+          status: 0,
+          message: trans('errors.networkError'),
+        });
+
         reject({
           type: 'error',
           message: trans('errors.networkError'),
         });
+      };
 
-      xhr.current.ontimeout = () =>
+      xhr.current.ontimeout = () => {
+        setError({
+          status: 0,
+          message: trans('errors.networkError'),
+        });
         reject({
           type: 'timeout',
           message: trans('errors.timeout'),
         });
+      };
     });
   }
 
@@ -106,7 +129,13 @@ export function useXhr(params = {}) {
     }
   }
 
-  return [send, abort];
+  return [send, error, abort];
+}
+
+function errorSnackbar(dispatch, message) {
+  dispatch(
+    snackbarMessage(message || trans('Components.snackbar.errorMessage')),
+  );
 }
 
 /**
@@ -208,10 +237,4 @@ function setHeaders(options, xhr, token) {
   });
 
   return this;
-}
-
-function errorSnackbar(dispatch, message) {
-  dispatch(
-    snackbarMessage(message || trans('Components.snackbar.errorMessage')),
-  );
 }

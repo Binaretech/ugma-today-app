@@ -1,5 +1,5 @@
 import React from 'react';
-import Ups from '../ups';
+import Ups from '../../screens/ups';
 
 class ErrorBoundary extends React.Component {
   constructor(props) {

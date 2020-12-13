@@ -3,12 +3,45 @@ import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useXhr } from '../../utils/xhr/hook';
 import requests from '../../utils/xhr/requests';
-import { reducer, actions } from './reducer';
 
-export const errors = {
-  NOT_FOUND: 'NOT_FOUND',
-  INTERNAL_ERROR: 'INTERNAL_ERROR',
+export const actions = {
+  SET_NEWS: 'SET_NEWS',
+  ADD_LIKE: 'ADD_LIKE',
+  REMOVE_LIKE: 'REMOVE_LIKE',
+  ADD_COMMENT: 'ADD_COMMENT',
 };
+
+/**
+ * @param {object} state
+ * @param {{type, news?, payload?}} action
+ *
+ * @return {object}
+ */
+export function reducer(state = {}, action) {
+  switch (action.type) {
+    case actions.SET_NEWS:
+      return action.news;
+    case actions.ADD_LIKE:
+      return {
+        ...state,
+        likedByUser: true,
+        likesCount: state.likesCount + 1,
+      };
+    case actions.REMOVE_LIKE:
+      return {
+        ...state,
+        likedByUser: false,
+        likesCount: state.likesCount - 1,
+      };
+    case action.ADD_COMMENT:
+      return {
+        ...state,
+        comments: [...state.comments, action.payload],
+      };
+    default:
+      return state;
+  }
+}
 
 export function useHandleComment(dispatch) {
   const { id } = useParams();
@@ -35,8 +68,7 @@ export function useHandleNews() {
   const { id } = useParams();
   const [loading, setLoading] = useState(false);
   const [news, dispatch] = useReducer(reducer, {});
-  const [send] = useXhr(requests.news.show);
-  const [error, setError] = useState(null);
+  const [send, error] = useXhr(requests.news.show);
 
   useEffect(() => {
     setLoading(true);
@@ -54,11 +86,6 @@ export function useHandleNews() {
       })
       .catch((error) => {
         setLoading(false);
-        setError({
-          type:
-            error?.status === 404 ? errors.NOT_FOUND : errors.INTERNAL_ERROR,
-          message: error?.message || error?.data?.message,
-        });
       });
     // eslint-disable-next-line
   }, [id]);
