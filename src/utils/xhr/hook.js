@@ -1,11 +1,11 @@
-import { useRef, useEffect } from "react";
-import { defaultOptions } from "./xhrConfig";
-import appBaseUrl from "../../configs";
-import { useHistory } from "react-router-dom";
-import paths from "../../routes/paths";
-import { useDispatch, useSelector } from "react-redux";
-import { snackbarMessage } from "../../redux/actions/snackbarActions";
-import { trans } from "../../trans/trans";
+import { useRef, useEffect, useState } from 'react';
+import { defaultOptions } from './xhrConfig';
+import appBaseUrl from '../../configs';
+import { useHistory } from 'react-router-dom';
+import paths from '../../routes/paths';
+import { useDispatch, useSelector } from 'react-redux';
+import { snackbarMessage } from '../../redux/actions/snackbarActions';
+import { trans } from '../../trans/trans';
 
 /**
  * @typedef {object} Params
@@ -19,12 +19,14 @@ import { trans } from "../../trans/trans";
  * @prop {boolean} redirectUnauthorized
  * @prop {boolean} showSucessSnackbar
  * @prop {boolean} showErrorSnackbar
+ * @prop {boolean} showErrorView
  *
  * @param {Params} params
  */
 export function useXhr(params) {
   params = { ...defaultOptions, ...params };
 
+  const [error, setError] = useState(null);
   const xhr = useRef(new XMLHttpRequest());
   const history = useHistory();
   const dispatch = useDispatch();
@@ -56,7 +58,7 @@ export function useXhr(params) {
         const response = getResponse(options, xhr.current);
         if (xhr.current.status >= 200 && xhr.current.status < 300) {
           resolve(
-            options.responseType === "json"
+            options.responseType === 'json'
               ? {
                   ...response,
                   status: xhr.current.status,
@@ -64,7 +66,7 @@ export function useXhr(params) {
               : {
                   [options.responseType]: response,
                   status: xhr.current.status,
-                }
+                },
           );
 
           if (options.showSucessSnackbar) {
@@ -72,40 +74,68 @@ export function useXhr(params) {
               snackbarMessage(
                 response?.data?.message ||
                   response?.message ||
-                  trans("Components.snackbar.successMessage")
-              )
+                  trans('Components.snackbar.successMessage'),
+              ),
             );
           }
           return;
         }
 
-        if (xhr.current.status === 401 && options.redirectUnauthorized)
+        if (options.showErrorSnackbar) {
+          errorSnackbar(dispatch, response?.data?.message || response?.message);
+        }
+
+        if (xhr.current.status === 401 && options.redirectUnauthorized) {
           history.push(paths.login);
+          return reject({ ...response, status: xhr.current.status });
+        }
+
+        setError({
+          status: xhr.current.status,
+          message: response?.data?.message || response?.message,
+        });
 
         return reject({ ...response, status: xhr.current.status });
       };
 
-      xhr.current.onerror = () =>
-        reject({
-          type: "error",
-          message: trans("errors.networkError"),
+      xhr.current.onerror = () => {
+        setError({
+          status: 0,
+          message: trans('errors.networkError'),
         });
 
-      xhr.current.ontimeout = () =>
         reject({
-          type: "timeout",
-          message: trans("errors.timeout"),
+          type: 'error',
+          message: trans('errors.networkError'),
         });
+      };
+
+      xhr.current.ontimeout = () => {
+        setError({
+          status: 0,
+          message: trans('errors.networkError'),
+        });
+        reject({
+          type: 'timeout',
+          message: trans('errors.timeout'),
+        });
+      };
     });
   }
 
   function abort() {
-    if (this.xhr.readyState < 4 && this.xhr.readyState > 0) {
-      this.xhr.abort();
+    if (xhr.current.readyState < 4 && xhr.current.readyState > 0) {
+      xhr.current.abort();
     }
   }
 
-  return [send, abort];
+  return [send, error, abort];
+}
+
+function errorSnackbar(dispatch, message) {
+  dispatch(
+    snackbarMessage(message || trans('Components.snackbar.errorMessage')),
+  );
 }
 
 /**
@@ -129,7 +159,7 @@ function formatUrl({ useBaseUrl, url, params, queryParams }) {
     return `${query}=${queryParams[query]}`;
   });
 
-  if (query.length > 0) url = `${url}?${query.join("&")}`;
+  if (query.length > 0) url = `${url}?${query.join('&')}`;
 
   return url;
 }
@@ -163,8 +193,8 @@ function setBody(options = {}) {
   }
 
   if (
-    options?.headers?.hasOwnProperty("Content-Type") &&
-    options?.headers["Content-Type"] === "application/json"
+    options?.headers?.hasOwnProperty('Content-Type') &&
+    options?.headers['Content-Type'] === 'application/json'
   ) {
     return JSON.stringify(options.body);
   }
@@ -184,7 +214,7 @@ function setBody(options = {}) {
  */
 function getResponse(options, xhr) {
   try {
-    if (options.responseType === "json") return JSON.parse(xhr.response);
+    if (options.responseType === 'json') return JSON.parse(xhr.response);
 
     return xhr.response;
   } catch (error) {
