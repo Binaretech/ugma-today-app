@@ -32,66 +32,66 @@ import { snackbarMessage } from '../redux/actions/snackbarActions';
  * @returns {Handler}
  */
 export function useDataManager(initialData = {}) {
-	const data = useRef(initialData);
-	const errors = useRef({});
+  const data = useRef(initialData);
+  const errors = useRef({});
 
-	function setValue(name, value) {
-		data.current[name] = value;
-	}
+  function setValue(name, value) {
+    data.current[name] = value;
+  }
 
-	function setError(name, value) {
-		errors.current[name] = value;
-	}
+  function setError(name, value) {
+    errors.current[name] = value;
+  }
 
-	function getValue(name, defaultValue = null) {
-		if (!data.current[name]) return defaultValue;
-		return data.current[name];
-	}
+  function getValue(name, defaultValue = null) {
+    if (!data.current[name]) return defaultValue;
+    return data.current[name];
+  }
 
-	function getData() {
-		return data.current;
-	}
+  function getData() {
+    return data.current;
+  }
 
-	function cleanData() {
-		return (data.current = {});
-	}
+  function cleanData() {
+    return (data.current = {});
+  }
 
-	function cleanErrors() {
-		return (errors.current = {});
-	}
+  function cleanErrors() {
+    return (errors.current = {});
+  }
 
-	function hasErrors() {
-		for (const key in errors.current) {
-			if (errors.current[key]) {
-				errors.current[key]();
-				return true;
-			}
-		}
+  function hasErrors() {
+    for (const key in errors.current) {
+      if (errors.current[key]) {
+        errors.current[key]();
+        return true;
+      }
+    }
 
-		return false;
-	}
+    return false;
+  }
 
-	function getError(key) {
-		return errors.current[key] ? true : false;
-	}
+  function getError(key) {
+    return errors.current[key] ? true : false;
+  }
 
-	function getErrors() {
-		return errors.current;
-	}
+  function getErrors() {
+    return errors.current;
+  }
 
-	const manager = {
-		setValue,
-		setError,
-		getValue,
-		getData,
-		cleanData,
-		cleanErrors,
-		hasErrors,
-		getError,
-		getErrors,
-	};
+  const manager = {
+    setValue,
+    setError,
+    getValue,
+    getData,
+    cleanData,
+    cleanErrors,
+    hasErrors,
+    getError,
+    getErrors,
+  };
 
-	return manager;
+  return manager;
 }
 
 /**
@@ -104,83 +104,83 @@ export function useDataManager(initialData = {}) {
  * @returns {[string, function(any, boolean) => boolean]}
  */
 export function useValidator(rules = []) {
-	const [validationError, setvalidationError] = useState('');
+  const [validationError, setvalidationError] = useState('');
 
-	function validate(value, omitMessage = false) {
-		for (const rule of rules) {
-			if (typeof rule === 'object') {
-				if (rule.validation && !rule.validation(value)) {
-					setvalidationError(rule.message);
-					return false;
-				}
-				setvalidationError('');
-				return true;
-			}
+  function validate(value, omitMessage = false) {
+    for (const rule of rules) {
+      if (typeof rule === 'object') {
+        if (rule.validation && !rule.validation(value)) {
+          setvalidationError(rule.message);
+          return false;
+        }
+        setvalidationError('');
+        return true;
+      }
 
-			const validationName = rule.split(':')[0];
-			const params = rule.split(':')[1]?.split(',') || [];
+      const validationName = rule.split(':')[0];
+      const params = rule.split(':')[1]?.split(',') || [];
 
-			if (
-				validationRules[validationName] &&
-				!validationRules[validationName](value, rules, ...params)
-			) {
-				let message = trans(
-					`validation.${validationName}`,
-					formatParams(params)
-				);
+      if (
+        validationRules[validationName] &&
+        !validationRules[validationName](value, rules, ...params)
+      ) {
+        let message = trans(
+          `validation.${validationName}`,
+          formatParams(params),
+        );
 
-				if (rules.includes('number'))
-					message = message.replace(/caracteres/, '');
+        if (rules.includes('number'))
+          message = message.replace(/caracteres/, '');
 
-				if (!omitMessage) setvalidationError(message);
-				return false;
-			}
-		}
+        if (!omitMessage) setvalidationError(message);
+        return false;
+      }
+    }
 
-		function formatParams(params) {
-			let transParams = {};
+    function formatParams(params) {
+      let transParams = {};
 
-			params.forEach((param, index) => {
-				transParams = {
-					...transParams,
-					[index]: param,
-				};
-			});
+      params.forEach((param, index) => {
+        transParams = {
+          ...transParams,
+          [index]: param,
+        };
+      });
 
-			return transParams;
-		}
+      return transParams;
+    }
 
-		setvalidationError('');
-		return true;
-	}
+    setvalidationError('');
+    return true;
+  }
 
-	return [validationError, validate];
+  return [validationError, validate];
 }
 
 export function useErrorMessage(name, aditionalMessages = []) {
-	const [message, setMessage] = useState('');
-	const errors = useSelector(
-		(state) => state.requestReducer.errors[name] || []
-	);
-	const dispatch = useDispatch();
+  const [message, setMessage] = useState('');
+  const errors = useSelector(
+    (state) => state.requestReducer.errors[name] || [],
+  );
+  const dispatch = useDispatch();
 
-	useEffect(() => {
-		const messages = [...errors, ...aditionalMessages];
+  useEffect(() => {
+    const messages = [...errors, ...aditionalMessages];
 
-		if (messages.length > 0) {
-			setMessage(organizeMessage(messages));
-		}
+    if (messages.length > 0) {
+      setMessage(organizeMessage(messages));
+    }
 
-		if (messages.length === 0) setMessage('');
-	}, [errors, name, message, aditionalMessages, dispatch]);
+    if (messages.length === 0) setMessage('');
+  }, [errors, name, message, aditionalMessages, dispatch]);
 
-	useEffect(() => {
-		return () => {
-			dispatch(cleanError(name));
-		};
-	}, [dispatch, name]);
+  useEffect(() => {
+    return () => {
+      dispatch(cleanError(name));
+    };
+  }, [dispatch, name]);
 
-	return message;
+  return message;
 }
 
 /**
@@ -188,29 +188,29 @@ export function useErrorMessage(name, aditionalMessages = []) {
  * @returns function
  */
 export function useLogout() {
-	const history = useHistory();
-	const dispatch = useDispatch();
-	const [send] = useXhr({
-		url: apiEndpoints.logout,
-		method: 'DELETE',
-	});
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const [send] = useXhr({
+    url: apiEndpoints.logout,
+    method: 'POST',
+  });
 
-	return () => {
-		send({
-			showErrorSnackbar: true,
-			showSucessSnackbar: true,
-		})
-			.then(() => {
-				dispatch(setLogout());
-				history.push(paths.home);
-			})
-			.catch((err) => {
-				console.error('Error: ', err);
-				dispatch(
-					snackbarMessage(
-						err?.message || trans('Components.snackbar.errorMessage')
-					)
-				);
-			});
-	};
+  return () => {
+    send({
+      showErrorSnackbar: true,
+      showSucessSnackbar: true,
+    })
+      .then(() => {
+        dispatch(setLogout());
+        history.push(paths.home);
+      })
+      .catch((err) => {
+        console.error('Error: ', err);
+        dispatch(
+          snackbarMessage(
+            err?.message || trans('Components.snackbar.errorMessage'),
+          ),
+        );
+      });
+  };
 }
