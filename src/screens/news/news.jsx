@@ -1,10 +1,10 @@
-import React from "react";
-import { useFetchNews } from "./functions";
-import Loader from "../../components/loader/Loader";
-import NewsTile from "../../components/newsTile";
-import { List, ListItem } from "@material-ui/core";
-import styles from "./styles.module.css";
-import { trans } from "../../trans/trans";
+import React from 'react';
+import { useFetchNews } from './functions';
+import Loader from '../../components/loader/Loader';
+import NewsTile from '../../components/newsTile';
+import { List, ListItem } from '@material-ui/core';
+import styles from './styles.module.css';
+import { trans } from '../../trans/trans';
 
 export default function News() {
   const [loading, news] = useFetchNews();
@@ -23,7 +23,7 @@ export default function News() {
     </List>
   ) : (
     <div className={styles.emptyResults}>
-      <p>{trans("words.emptyResults")}</p>
+      <p>{trans('words.emptyResults')}</p>
     </div>
   );
 }

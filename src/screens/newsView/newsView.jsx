@@ -55,7 +55,6 @@ export default function NewsView() {
           ))}
 
           {loadMore()}
-
           <div className={styles.add_comment}>
             {commentLoader ? (
               <div className={styles.centerLoader}>

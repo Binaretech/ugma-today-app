@@ -3,7 +3,6 @@ import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useXhr } from '../../utils/xhr/hook';
 import requests from '../../utils/xhr/requests';
-import { mergeUniqueElements } from '../../utils/array';
 
 export const actions = {
   SET_NEWS: 'SET_NEWS',
