@@ -29,18 +29,13 @@ const endpoints = {
       showErrorSnackbar: true,
     },
     like: {
-      method: "POST",
-      url: "/post/like/:id",
+      method: 'POST',
+      url: '/post/like/:id',
       showErrorSnackbar: true,
     },
     unlike: {
-      method: "POST",
-      url: "/post/unlike/:id",
-      showErrorSnackbar: true,
-    },
-    comment: {
-      method: "POST",
-      url: "/post/:id/comment",
+      method: 'POST',
+      url: '/post/unlike/:id',
       showErrorSnackbar: true,
     },
   },
@@ -56,6 +51,23 @@ const endpoints = {
     show: {
       method: 'GET',
       url: '/news/:id',
+      showErrorSnackbar: true,
+    },
+  },
+  comment: {
+    store: {
+      method: 'POST',
+      url: '/comment/:id',
+      showErrorSnackbar: true,
+    },
+    index: {
+      method: 'GET',
+      url: '/comment/:id',
+      showErrorSnackbar: true,
+    },
+    indexReplies: {
+      method: 'GET',
+      url: '/replies/:id',
       showErrorSnackbar: true,
     },
   },

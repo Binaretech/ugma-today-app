@@ -1,10 +1,10 @@
-import React from "react";
-import { Avatar, Card } from "@material-ui/core";
-import dayjs from "dayjs";
-import ReactMarkdown from "react-markdown";
-import LikesAndComments from "../likesAndComments";
-import { useOnLike } from "./functions";
-import styles from "./styles.module.css";
+import React from 'react';
+import { Avatar, Card } from '@material-ui/core';
+import dayjs from 'dayjs';
+import ReactMarkdown from 'react-markdown';
+import LikesAndComments from '../likesAndComments';
+import { useOnLike } from './functions';
+import styles from './styles.module.css';
 
 export default function NewsContent({ news, dispatch }) {
   const [like, unlike] = useOnLike(news?.id, dispatch);
@@ -16,9 +16,11 @@ export default function NewsContent({ news, dispatch }) {
       </div>
       <div className={styles.author}>
         <Avatar src={news?.user?.profileImage} />
-        <p>
-          {news?.user?.profile?.fullname} ({news?.user?.username})
-        </p>
+        {news && (
+          <p>
+            {news?.user?.profile?.fullname} ({news?.user?.username})
+          </p>
+        )}
       </div>
       <ReactMarkdown>{news?.content}</ReactMarkdown>
       <div className={styles.newsFooter}>
@@ -30,7 +32,7 @@ export default function NewsContent({ news, dispatch }) {
           onClickLike={news.likedByUser ? unlike : like}
         />
         <div className={styles.timestamp}>
-          <p>{dayjs(news?.createdAt).fromNow()}</p>
+          {news.createdAt && <p>{dayjs(news?.createdAt).fromNow()}</p>}
         </div>
       </div>
     </Card>
