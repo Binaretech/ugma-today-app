@@ -2,15 +2,40 @@ import React from 'react';
 import Loader from '../../components/loader/Loader';
 import NewsContent from '../../components/newsContent';
 import Comment from '../../components/comment';
-import { useHandleNews } from './function';
-import { useHandleComment } from './function';
+import { Button } from '@material-ui/core';
 import CommentBox from '../../components/commentBox/commentBox';
 import HTTPErrorHandler from '../../components/httpErrorHandler';
 import styles from './styles.module.css';
+import {
+  useHandleNews,
+  useHandleComment,
+  useHandleCommentPagination,
+} from './function';
+import { trans } from '../../trans/trans';
 
 export default function NewsView() {
   const [loading, news, dispatch, error] = useHandleNews();
   const [comment, commentLoader] = useHandleComment(dispatch);
+  const [fetchComments, commentsLoading] = useHandleCommentPagination(dispatch);
+
+  const loadMore = () => {
+    if (news?.comments?.ids?.length === news.commentsCount) return;
+
+    return commentsLoading ? (
+      <div className={styles.loadMore}>
+        <Loader />
+      </div>
+    ) : (
+      <Button
+        className={styles.loadMore}
+        variant="flat"
+        onClick={fetchComments(news?.comments?.currentPage + 1)}
+      >
+        {trans('words.loadMore')}
+      </Button>
+    );
+  };
+
   return loading ? (
     <div className={styles.loaderContainer}>
       <Loader />
@@ -20,13 +45,16 @@ export default function NewsView() {
       <div>
         <NewsContent news={news} dispatch={dispatch} />
         <div className={styles.comments}>
-          {news?.comments?.map((comment) => (
+          {news?.comments?.ids?.map?.((id) => (
             <Comment
               className={styles.comment}
-              key={comment?.id}
-              comment={comment}
+              key={id}
+              dispatch={dispatch}
+              comment={news?.comments?.data?.[id]}
             />
           ))}
+
+          {loadMore()}
           <div className={styles.add_comment}>
             {commentLoader ? (
               <div className={styles.centerLoader}>

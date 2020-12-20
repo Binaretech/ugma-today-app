@@ -1,4 +1,4 @@
-import NewsView from "./newsView";
+import NewsView from './newsView';
 
-export { actions as newsActions } from "./function";
+export { actions as newsActions } from './function';
 export default NewsView;
