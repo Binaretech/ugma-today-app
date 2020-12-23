@@ -60,6 +60,11 @@ const endpoints = {
       url: '/replies/:id',
       showErrorSnackbar: true,
     },
+    like: {
+      method: 'POST',
+      url: '/comment/like/:id',
+      showErrorSnackbar: true,
+    },
   },
 };
 

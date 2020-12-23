@@ -31,3 +31,21 @@ export function useHandleRepliesPagination(dispatch) {
 
   return [fetchReplies, loading];
 }
+
+export function useOnLike(id, dispatch) {
+  const [send] = useXhr();
+
+  function like() {
+    send({ ...requests.comment.like, params: { id } }).then(() =>
+      dispatch({ type: newsActions.LIKE_COMMENT, comment: id }),
+    );
+  }
+
+  function unlike() {
+    send({ ...requests.comment.unlike, params: { id } }).then(() =>
+      dispatch({ type: newsActions.REMOVE_LIKE }),
+    );
+  }
+
+  return [like, unlike];
+}

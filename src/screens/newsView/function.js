@@ -1,106 +1,11 @@
-import { useReducer, useState } from 'react';
+import { useReducer, useState, createContext } from 'react';
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useXhr } from '../../utils/xhr/hook';
 import requests from '../../utils/xhr/requests';
+import { actions, reducer } from './reducer';
 
-export const actions = {
-  SET_NEWS: 'SET_NEWS',
-  ADD_LIKE: 'ADD_LIKE',
-  REMOVE_LIKE: 'REMOVE_LIKE',
-  ADD_COMMENT: 'ADD_COMMENT',
-  LOAD_COMMENTS: 'LOAD_COMMENTS',
-  LOAD_REPLIES: 'LOAD_REPLIES',
-};
-
-/**
- * @param {object} state
- * @param {{type, news?, payload?}} action
- *
- * @return {object}
- */
-export function reducer(state = {}, action) {
-  switch (action.type) {
-    case actions.SET_NEWS:
-      return {
-        ...action.news,
-        comments: {
-          ids: action.news?.comments?.ids,
-          data: action.news?.comments?.data,
-          currentPage: action.news?.comments?.currentPage ?? 1,
-        },
-      };
-    case actions.ADD_LIKE:
-      return {
-        ...state,
-        likedByUser: true,
-        likesCount: state.likesCount + 1,
-      };
-    case actions.REMOVE_LIKE:
-      return {
-        ...state,
-        likedByUser: false,
-        likesCount: state.likesCount - 1,
-      };
-    case actions.ADD_COMMENT:
-      return {
-        ...state,
-        comments: {
-          ids: [...(state.comments?.ids ?? []), action.payload?.id],
-          data: {
-            ...state.comments.data,
-            [action.payload?.id]: action.payload,
-          },
-        },
-      };
-    case actions.LOAD_COMMENTS:
-      return {
-        ...state,
-        comments: {
-          ids: [
-            ...new Set([
-              ...(state.comments?.ids ?? []),
-              ...action.payload?.ids,
-            ]),
-          ],
-          data: {
-            ...state.comments.data,
-            ...(action.payload?.data ?? {}),
-          },
-          currentPage: action.payload.current_page,
-        },
-      };
-    case actions.LOAD_REPLIES:
-      return {
-        ...state,
-        comments: {
-          ...state.comments,
-          ids: state.comments.ids,
-          data: {
-            ...state.comments.data,
-            [action?.comment]: {
-              ...state?.comments?.data[action?.comment],
-              replies: {
-                ids: [
-                  ...new Set([
-                    ...state.comments?.data?.[action.comment]?.replies?.ids,
-                    ...action?.payload?.ids,
-                  ]),
-                ],
-                data: {
-                  ...state?.comments?.data?.[action?.comment].replies?.data,
-                  ...action?.payload?.data,
-                },
-                currentPage: action.payload?.current_page,
-              },
-            },
-          },
-        },
-      };
-    default:
-      return state;
-  }
-}
+export const NewsContext = createContext(null);
 
 export function useHandleComment(dispatch) {
   const { id } = useParams();
