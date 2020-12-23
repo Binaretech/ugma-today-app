@@ -7,6 +7,9 @@ export const actions = {
   LOAD_REPLIES: 'LOAD_REPLIES',
   ADD_REPLY: 'ADD_REPLY',
   LIKE_COMMENT: 'LIKE_COMMENT',
+  UNLIKE_COMMENT: 'UNLIKE_COMMENT',
+  LIKE_REPLY: 'LIKE_REPLY',
+  UNLIKE_REPLY: 'UNLIKE_REPLY',
 };
 
 /**
@@ -16,6 +19,7 @@ export const actions = {
  * @return {object}
  */
 export function reducer(state = {}, action) {
+  debugger;
   switch (action.type) {
     case actions.SET_NEWS:
       return {
@@ -51,7 +55,6 @@ export function reducer(state = {}, action) {
         },
       };
     case actions.LIKE_COMMENT:
-      debugger;
       return {
         ...state,
         comments: {
@@ -63,6 +66,45 @@ export function reducer(state = {}, action) {
               likes: state.comments.data[action.comment].likes + 1,
               likedByUser: true,
             },
+          },
+        },
+      };
+    case actions.UNLIKE_COMMENT:
+      return {
+        ...state,
+        comments: {
+          ...state.comments,
+          data: {
+            ...state.comments.data,
+            [action.comment]: {
+              ...state.comments.data[action.comment],
+              likes: state.comments.data[action.comment].likes - 1,
+              likedByUser: false,
+            },
+          },
+        },
+      };
+    case actions.LIKE_REPLY:
+      return {
+        ...state,
+        replies: {
+          ...state.replies,
+          [action.comment]: {
+            ...state.replies[action.comment],
+            likedByUser: true,
+            likes: state.replies[action.comment].likes + 1,
+          },
+        },
+      };
+    case actions.UNLIKE_REPLY:
+      return {
+        ...state,
+        replies: {
+          ...state.replies,
+          [action.comment]: {
+            ...state.replies[action.comment],
+            likedByUser: false,
+            likes: state.replies[action.comment].likes - 1,
           },
         },
       };

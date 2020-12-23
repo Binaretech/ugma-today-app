@@ -50,6 +50,11 @@ const endpoints = {
       url: '/comment/:id',
       showErrorSnackbar: true,
     },
+    reply: {
+      method: 'POST',
+      url: '/comment/:id/reply',
+      showErrorSnackbar: true,
+    },
     index: {
       method: 'GET',
       url: '/comment/:id',
@@ -63,6 +68,11 @@ const endpoints = {
     like: {
       method: 'POST',
       url: '/comment/like/:id',
+      showErrorSnackbar: true,
+    },
+    unlike: {
+      method: 'POST',
+      url: '/comment/unlike/:id',
       showErrorSnackbar: true,
     },
   },

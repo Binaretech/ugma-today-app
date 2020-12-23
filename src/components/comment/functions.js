@@ -32,18 +32,24 @@ export function useHandleRepliesPagination(dispatch) {
   return [fetchReplies, loading];
 }
 
-export function useOnLike(id, dispatch) {
+export function useOnLike(id, dispatch, reply = false) {
   const [send] = useXhr();
-
   function like() {
+    debugger;
     send({ ...requests.comment.like, params: { id } }).then(() =>
-      dispatch({ type: newsActions.LIKE_COMMENT, comment: id }),
+      dispatch({
+        type: !reply ? newsActions.LIKE_COMMENT : newsActions.LIKE_REPLY,
+        comment: id,
+      }),
     );
   }
 
   function unlike() {
     send({ ...requests.comment.unlike, params: { id } }).then(() =>
-      dispatch({ type: newsActions.REMOVE_LIKE }),
+      dispatch({
+        type: !reply ? newsActions.UNLIKE_COMMENT : newsActions.UNLIKE_REPLY,
+        comment: id,
+      }),
     );
   }
 

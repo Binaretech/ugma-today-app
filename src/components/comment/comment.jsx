@@ -17,7 +17,7 @@ export default function Comment({
   replies,
 }) {
   const [fetchReplies, loading] = useHandleRepliesPagination(dispatch);
-  const [like] = useOnLike(comment?.id, dispatch);
+  const [like, unlike] = useOnLike(comment?.id, dispatch, reply);
 
   const loadMore = (page, id) => {
     if (comment?.repliesCount === replies?.length || !replies) return;
@@ -54,7 +54,7 @@ export default function Comment({
             disableComment={reply}
             likesCount={comment?.likes}
             commentsCount={comment?.repliesCount}
-            onClickLike={like}
+            onClickLike={comment?.likedByUser ? unlike : like}
           />
           <div className={styles.timestamp}>
             <p>{dayjs(comment?.createdAt).fromNow()}</p>
@@ -69,6 +69,7 @@ export default function Comment({
             className={styles.comment}
             key={reply?.id + '-' + index}
             comment={reply}
+            dispatch={dispatch}
           />
         ))}
       </div>
