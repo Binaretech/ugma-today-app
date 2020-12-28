@@ -1,73 +1,75 @@
 export default {
-  //    A
-  accept: 'Aceptar',
-  add: 'Añadir',
-  //    B
+	//    A
+	accept: 'Aceptar',
+	add: 'Añadir',
+	answer: 'Responder',
+	//    B
 
-  //    D
-  //    C
-  confirmPassword: 'Confirmar contraseña',
-  connectionError: 'Error de conexión',
-  comment: 'Comentar',
-  commentary: 'Comentario',
-  currency: 'Moneda',
-  close: 'Cerrar',
+	//    D
+	//    C
+	confirmPassword: 'Confirmar contraseña',
+	connectionError: 'Error de conexión',
+	comment: 'Comentar',
+	commentary: 'Comentario',
+	currency: 'Moneda',
+	close: 'Cerrar',
 
-  //    D
+	//    D
 
-  //    E
-  edit: 'Editar',
-  email: 'Correo electrónico',
-  emptyResults: 'No hay resultados disponibles',
-  //    F
+	//    E
+	edit: 'Editar',
+	email: 'Correo electrónico',
+	emptyResults: 'No hay resultados disponibles',
+	//    F
 
-  //    G
+	//    G
 
-  //    H
+	//    H
 
-  //    I
-  id: 'ID',
-  //    J
+	//    I
+	id: 'ID',
+	//    J
 
-  //    K
+	//    K
 
-  //    L
-  lastname: 'Apellido',
-  loadMore: 'Cargar más',
+	//    L
+	lastname: 'Apellido',
+	loadMore: 'Cargar más',
 
-  //    M
-  modifiedBy: 'Modificado por',
+	//    M
+	modifiedBy: 'Modificado por',
 
-  //    N
-  name: 'Nombre',
+	//    N
+	name: 'Nombre',
 
-  //    O
-  of: 'De',
+	//    O
+	of: 'De',
 
-  //    P
-  password: 'Contraseña',
-  page: 'Página',
-  price: 'Precio',
+	//    P
+	password: 'Contraseña',
+	page: 'Página',
+	price: 'Precio',
 
-  //    Q
+	//    Q
 
-  //    R
-  reload: 'Recargar',
-  //    S
+	//    R
+	reload: 'Recargar',
+	reply: 'Respuesta',
+	//    S
 
-  //    T
+	//    T
 
-  //    U
-  user: 'Usuario',
+	//    U
+	user: 'Usuario',
 
-  //    V
+	//    V
 
-  //    W
-  word: 'Palabra',
+	//    W
+	word: 'Palabra',
 
-  //    X
+	//    X
 
-  //    Y
+	//    Y
 
-  //    Z
+	//    Z
 };

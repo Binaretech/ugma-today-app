@@ -19,7 +19,6 @@ export const actions = {
  * @return {object}
  */
 export function reducer(state = {}, action) {
-  debugger;
   switch (action.type) {
     case actions.SET_NEWS:
       return {
@@ -170,12 +169,12 @@ function addReply(state, action) {
   return {
     ...state,
     comments: {
-      ...state.comment,
+      ...state.comments,
       data: {
-        ...state.comment.data,
+        ...state.comments.data,
         [action.comment]: {
           ...comment,
-          replies: [...comment.replies, action.payload.id],
+          replies: { ids: [...comment.replies.ids, action.payload.id] },
         },
       },
     },

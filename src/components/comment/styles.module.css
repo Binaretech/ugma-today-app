@@ -2,6 +2,18 @@
   padding: 0 1rem;
 }
 
+.replyContainer {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+}
+
+.replyButton {
+	display: flex;
+	justify-content: flex-end;
+	padding: 5px;	
+}
+
 .timestamp {
   padding-top: 1rem;
   text-align: right;

@@ -24,7 +24,7 @@ export function useHandleRepliesPagination(dispatch) {
           payload: response,
         });
       })
-      .catch((error) => {
+      .catch(() => {
         setLoading(false);
       });
   };
@@ -35,7 +35,6 @@ export function useHandleRepliesPagination(dispatch) {
 export function useOnLike(id, dispatch, reply = false) {
   const [send] = useXhr();
   function like() {
-    debugger;
     send({ ...requests.comment.like, params: { id } }).then(() =>
       dispatch({
         type: !reply ? newsActions.LIKE_COMMENT : newsActions.LIKE_REPLY,
@@ -54,4 +53,22 @@ export function useOnLike(id, dispatch, reply = false) {
   }
 
   return [like, unlike];
+}
+
+export function useOnReply(id, dispatch) {
+  const [send] = useXhr({ ...requests.comment.reply, params: { id } });
+  const [value, setValue] = useState('');
+
+  function reply() {
+    send({ body: { comment: value } }).then((response) => {
+      dispatch({
+        type: newsActions.ADD_REPLY,
+        payload: response.data,
+        comment: id,
+      });
+      setValue('');
+    });
+  }
+
+  return [value, setValue, reply];
 }

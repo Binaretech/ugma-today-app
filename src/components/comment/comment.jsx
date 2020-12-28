@@ -1,13 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Avatar, Card } from '@material-ui/core';
 import LikesAndComments from '../likesAndComments';
 import Loader from '../loader/Loader';
 import ReactMarkdown from 'react-markdown';
 import { trans } from '../../trans/trans';
-import { useHandleRepliesPagination, useOnLike } from './functions';
+import { useOnReply, useHandleRepliesPagination, useOnLike } from './functions';
 import dayjs from 'dayjs';
 import styles from './styles.module.css';
 import { Button } from '@material-ui/core';
+import MarkDownEditor from '../markdownEditor';
 
 export default function Comment({
   comment,
@@ -18,6 +19,8 @@ export default function Comment({
 }) {
   const [fetchReplies, loading] = useHandleRepliesPagination(dispatch);
   const [like, unlike] = useOnLike(comment?.id, dispatch, reply);
+  const [minimized, setMinimized] = useState(true);
+  const [value, setValue, replyComment] = useOnReply(comment?.id, dispatch);
 
   const loadMore = (page, id) => {
     if (comment?.repliesCount === replies?.length || !replies) return;
@@ -36,6 +39,18 @@ export default function Comment({
       </Button>
     );
   };
+
+  function onFocusEditor() {
+    setMinimized(false);
+  }
+
+  function onBlurEditor() {
+    setMinimized(true);
+  }
+
+  function onChange(value) {
+    setValue(value);
+  }
 
   return (
     <div className={`${styles.comment} ${className || ''}`.trimEnd()}>
@@ -63,6 +78,7 @@ export default function Comment({
       </Card>
       <div className={styles.replies}>
         {loadMore(replies?.currentPage || 1, comment?.id)}
+
         {replies?.map?.((reply, index) => (
           <Comment
             reply
@@ -72,6 +88,30 @@ export default function Comment({
             dispatch={dispatch}
           />
         ))}
+
+        {!comment.reply_to_id && (
+          <div className={styles.replyContainer}>
+            <MarkDownEditor
+              minimized={minimized && !value.trim()}
+              onFocus={onFocusEditor}
+              onBlur={onBlurEditor}
+              onChange={onChange}
+              value={value}
+            />
+
+            {(!minimized || value.trim()) && (
+              <div className={styles.replyButton}>
+                <Button
+                  onClick={replyComment}
+                  variant="contained"
+                  color="primary"
+                >
+                  {trans('words.answer')}
+                </Button>
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
