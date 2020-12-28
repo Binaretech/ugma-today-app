@@ -24,10 +24,51 @@ export function useHandleRepliesPagination(dispatch) {
           payload: response,
         });
       })
-      .catch((error) => {
+      .catch(() => {
         setLoading(false);
       });
   };
 
   return [fetchReplies, loading];
+}
+
+export function useOnLike(id, dispatch, reply = false) {
+  const [send] = useXhr();
+  function like() {
+    send({ ...requests.comment.like, params: { id } }).then(() =>
+      dispatch({
+        type: !reply ? newsActions.LIKE_COMMENT : newsActions.LIKE_REPLY,
+        comment: id,
+      }),
+    );
+  }
+
+  function unlike() {
+    send({ ...requests.comment.unlike, params: { id } }).then(() =>
+      dispatch({
+        type: !reply ? newsActions.UNLIKE_COMMENT : newsActions.UNLIKE_REPLY,
+        comment: id,
+      }),
+    );
+  }
+
+  return [like, unlike];
+}
+
+export function useOnReply(id, dispatch) {
+  const [send] = useXhr({ ...requests.comment.reply, params: { id } });
+  const [value, setValue] = useState('');
+
+  function reply() {
+    send({ body: { comment: value } }).then((response) => {
+      dispatch({
+        type: newsActions.ADD_REPLY,
+        payload: response.data,
+        comment: id,
+      });
+      setValue('');
+    });
+  }
+
+  return [value, setValue, reply];
 }

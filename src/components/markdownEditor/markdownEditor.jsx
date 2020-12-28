@@ -1,12 +1,12 @@
-import React, { useEffect, useRef, memo } from "react";
-import MarkDown from "react-markdown";
-import styles from "./styles.module.css";
-import FormatItalicIcon from "@material-ui/icons/FormatItalic";
-import FormatBoldIcon from "@material-ui/icons/FormatBold";
-import FormatListNumberedIcon from "@material-ui/icons/FormatListNumbered";
-import FormatListBulletedIcon from "@material-ui/icons/FormatListBulleted";
-import { Divider, IconButton } from "@material-ui/core";
-import { useTextEdit } from "./functions.js";
+import React, { useEffect, useRef } from 'react';
+import MarkDown from 'react-markdown';
+import styles from './styles.module.css';
+import FormatItalicIcon from '@material-ui/icons/FormatItalic';
+import FormatBoldIcon from '@material-ui/icons/FormatBold';
+import FormatListNumberedIcon from '@material-ui/icons/FormatListNumbered';
+import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted';
+import { Divider, IconButton } from '@material-ui/core';
+import { useTextEdit } from './functions.js';
 
 function MarkDownEditor(props) {
   const [
@@ -45,13 +45,19 @@ function MarkDownEditor(props) {
           <FormatListBulletedIcon />
         </IconButton>
       </div>
-      <div className={styles.editor}>
+      <div
+        className={`${styles.editor} ${
+          props.minimized && styles.minimized
+        }`.trim()}
+      >
         <textarea
           aria-label="markdown-field"
           ref={textarea}
           onChange={onChange}
           onScroll={onScroll}
           value={value}
+          onFocus={props.onFocus}
+          onBlur={props.onBlur}
         />
         <Divider orientation="vertical" />
         <div
@@ -67,7 +73,7 @@ function MarkDownEditor(props) {
 }
 
 MarkDownEditor.defaultProps = {
-  value: "",
+  value: '',
 };
 
 export default MarkDownEditor;

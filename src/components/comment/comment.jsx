@@ -1,19 +1,29 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Avatar, Card } from '@material-ui/core';
 import LikesAndComments from '../likesAndComments';
 import Loader from '../loader/Loader';
 import ReactMarkdown from 'react-markdown';
 import { trans } from '../../trans/trans';
-import { useHandleRepliesPagination } from './functions';
+import { useOnReply, useHandleRepliesPagination, useOnLike } from './functions';
 import dayjs from 'dayjs';
 import styles from './styles.module.css';
 import { Button } from '@material-ui/core';
+import MarkDownEditor from '../markdownEditor';
 
-export default function Comment({ comment, className, dispatch, reply }) {
+export default function Comment({
+  comment,
+  className,
+  dispatch,
+  reply,
+  replies,
+}) {
   const [fetchReplies, loading] = useHandleRepliesPagination(dispatch);
+  const [like, unlike] = useOnLike(comment?.id, dispatch, reply);
+  const [minimized, setMinimized] = useState(true);
+  const [value, setValue, replyComment] = useOnReply(comment?.id, dispatch);
 
   const loadMore = (page, id) => {
-    if (comment?.repliesCount === comment?.replies?.ids?.length) return;
+    if (comment?.repliesCount === replies?.length || !replies) return;
 
     return loading ? (
       <div className={styles.loadMore}>
@@ -22,13 +32,25 @@ export default function Comment({ comment, className, dispatch, reply }) {
     ) : (
       <Button
         className={styles.loadMore}
-        variant="flat"
+        variant="text"
         onClick={fetchReplies(page, id)}
       >
         {trans('words.loadMore')}
       </Button>
     );
   };
+
+  function onFocusEditor() {
+    setMinimized(false);
+  }
+
+  function onBlurEditor() {
+    setMinimized(true);
+  }
+
+  function onChange(value) {
+    setValue(value);
+  }
 
   return (
     <div className={`${styles.comment} ${className || ''}`.trimEnd()}>
@@ -42,9 +64,12 @@ export default function Comment({ comment, className, dispatch, reply }) {
         <ReactMarkdown>{comment?.comment}</ReactMarkdown>
         <div className={styles.footer}>
           <LikesAndComments
+            likedByUser={comment.likedByUser}
+            buttons
             disableComment={reply}
             likesCount={comment?.likes}
             commentsCount={comment?.repliesCount}
+            onClickLike={comment?.likedByUser ? unlike : like}
           />
           <div className={styles.timestamp}>
             <p>{dayjs(comment?.createdAt).fromNow()}</p>
@@ -52,15 +77,41 @@ export default function Comment({ comment, className, dispatch, reply }) {
         </div>
       </Card>
       <div className={styles.replies}>
-        {loadMore(comment?.replies?.currentPage || 1, comment?.id)}
-        {comment?.replies?.ids?.map?.((id) => (
+        {loadMore(replies?.currentPage || 1, comment?.id)}
+
+        {replies?.map?.((reply, index) => (
           <Comment
             reply
             className={styles.comment}
-            key={id}
-            comment={comment.replies.data[id]}
+            key={reply?.id + '-' + index}
+            comment={reply}
+            dispatch={dispatch}
           />
         ))}
+
+        {!comment.reply_to_id && (
+          <div className={styles.replyContainer}>
+            <MarkDownEditor
+              minimized={minimized && !value.trim()}
+              onFocus={onFocusEditor}
+              onBlur={onBlurEditor}
+              onChange={onChange}
+              value={value}
+            />
+
+            {(!minimized || value.trim()) && (
+              <div className={styles.replyButton}>
+                <Button
+                  onClick={replyComment}
+                  variant="contained"
+                  color="primary"
+                >
+                  {trans('words.answer')}
+                </Button>
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

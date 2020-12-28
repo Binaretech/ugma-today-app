@@ -10,6 +10,7 @@ import {
   useHandleNews,
   useHandleComment,
   useHandleCommentPagination,
+  NewsContext,
 } from './function';
 import { trans } from '../../trans/trans';
 
@@ -28,7 +29,7 @@ export default function NewsView() {
     ) : (
       <Button
         className={styles.loadMore}
-        variant="flat"
+        variant="text"
         onClick={fetchComments(news?.comments?.currentPage + 1)}
       >
         {trans('words.loadMore')}
@@ -42,30 +43,35 @@ export default function NewsView() {
     </div>
   ) : (
     <HTTPErrorHandler error={error}>
-      <div>
-        <NewsContent news={news} dispatch={dispatch} />
-        <div className={styles.comments}>
-          {news?.comments?.ids?.map?.((id) => (
-            <Comment
-              className={styles.comment}
-              key={id}
-              dispatch={dispatch}
-              comment={news?.comments?.data?.[id]}
-            />
-          ))}
+      <NewsContext.Provider value={dispatch}>
+        <div>
+          <NewsContent news={news} dispatch={dispatch} />
+          <div className={styles.comments}>
+            {news?.comments?.ids?.map?.((id) => (
+              <Comment
+                className={styles.comment}
+                key={id}
+                dispatch={dispatch}
+                comment={news?.comments?.data?.[id]}
+                replies={news?.comments?.data?.[id]?.replies?.ids?.map?.(
+                  (id) => news?.replies?.[id],
+                )}
+              />
+            ))}
 
-          {loadMore()}
-          <div className={styles.add_comment}>
-            {commentLoader ? (
-              <div className={styles.centerLoader}>
-                <Loader />
-              </div>
-            ) : (
-              <CommentBox onClick={comment} />
-            )}
+            {loadMore()}
+            <div className={styles.add_comment}>
+              {commentLoader ? (
+                <div className={styles.centerLoader}>
+                  <Loader />
+                </div>
+              ) : (
+                <CommentBox onClick={comment} />
+              )}
+            </div>
           </div>
         </div>
-      </div>
+      </NewsContext.Provider>
     </HTTPErrorHandler>
   );
 }

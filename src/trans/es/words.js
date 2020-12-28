@@ -2,6 +2,7 @@ export default {
   //    A
   accept: 'Aceptar',
   add: 'Añadir',
+  answer: 'Responder',
   //    B
 
   //    D
@@ -53,6 +54,7 @@ export default {
 
   //    R
   reload: 'Recargar',
+  reply: 'Respuesta',
   //    S
 
   //    T
