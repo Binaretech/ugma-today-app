@@ -6,8 +6,8 @@ import { List, ListItem } from '@material-ui/core';
 import styles from './styles.module.css';
 import { trans } from '../../trans/trans';
 
-export default function News() {
-  const [loading, news] = useFetchNews();
+export default function News({ onlyMostRecentNews }) {
+  const [loading, news] = useFetchNews(onlyMostRecentNews);
 
   return loading ? (
     <div className={styles.loader}>
