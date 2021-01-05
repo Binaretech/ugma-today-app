@@ -1,6 +1,7 @@
+// eslint-disable-next-line
 export default {
-	login: '/admin/login',
-	createCost: '/cost',
-	register: '/register',
-	logout: '/logout',
+  login: '/admin/login',
+  createCost: '/cost',
+  register: '/register',
+  logout: '/logout',
 };

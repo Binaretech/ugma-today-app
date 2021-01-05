@@ -5,25 +5,42 @@ import NewsTile from '../../components/newsTile';
 import { List, ListItem } from '@material-ui/core';
 import styles from './styles.module.css';
 import { trans } from '../../trans/trans';
+import Pagination from '../../components/pagination';
 
 export default function News({ onlyMostRecentNews }) {
-  const [loading, news] = useFetchNews(onlyMostRecentNews);
+  const [loading, news, currentPage, setCurrentPage, totalPages] = useFetchNews(
+    onlyMostRecentNews,
+  );
 
-  return loading ? (
-    <div className={styles.loader}>
-      <Loader />
-    </div>
-  ) : news.length > 0 ? (
-    <List className={styles.container}>
-      {news.map((item) => (
-        <ListItem key={item.id}>
-          <NewsTile news={item} />
-        </ListItem>
-      ))}
-    </List>
-  ) : (
-    <div className={styles.emptyResults}>
-      <p>{trans('words.emptyResults')}</p>
+  const handlePaginationOnChange = (_, value) => {
+    setCurrentPage(value);
+  };
+  return (
+    <div className={styles.mainContainer}>
+      {loading ? (
+        <div className={styles.loader}>
+          <Loader />
+        </div>
+      ) : news.length > 0 ? (
+        <List className={styles.container}>
+          {news.map((item) => (
+            <ListItem key={item.id}>
+              <NewsTile news={item} />
+            </ListItem>
+          ))}
+        </List>
+      ) : (
+        <div className={styles.emptyResults}>
+          <p>{trans('words.emptyResults')}</p>
+        </div>
+      )}
+      {!onlyMostRecentNews && (
+        <Pagination
+          count={totalPages}
+          page={currentPage}
+          onChange={handlePaginationOnChange}
+        />
+      )}
     </div>
   );
 }
