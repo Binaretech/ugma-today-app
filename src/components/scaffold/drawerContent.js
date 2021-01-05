@@ -6,6 +6,8 @@ import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import paths from '../../routes/paths';
 import { useLogout } from '../../utils/customHooks';
+
+// eslint-disable-next-line
 export default (userId) => {
   const privateWithLogout = [
     ...privateOptions,
@@ -30,11 +32,6 @@ export default (userId) => {
         to: paths.news,
       },
       ...(!userId ? hideAfterLoginOptions : privateWithLogout),
-      // {
-      //     title: trans('Components.drawer.listPrices'),
-      //     icon: MonetizationOnIcon,
-      //     to: paths.costList
-      // },
     ],
   ];
 };
