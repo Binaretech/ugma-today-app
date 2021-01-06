@@ -9,7 +9,7 @@ export function useFetchNews(onlyMostRecentNews = false) {
     showErrorSnackbar: true,
     queryParams: {
       ...requests.news.index.queryParams,
-      ...Object.assign({}, onlyMostRecentNews ? { pagination: 5 } : {}),
+      ...(onlyMostRecentNews ? { pagination: 5 } : {}),
       page: currentPage,
     },
   });
