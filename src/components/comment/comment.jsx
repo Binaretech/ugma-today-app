@@ -9,6 +9,7 @@ import dayjs from 'dayjs';
 import styles from './styles.module.css';
 import { Button } from '@material-ui/core';
 import MarkDownEditor from '../markdownEditor';
+import { useSelector } from 'react-redux';
 
 export default function Comment({
   comment,
@@ -21,6 +22,7 @@ export default function Comment({
   const [like, unlike] = useOnLike(comment?.id, dispatch, reply);
   const [minimized, setMinimized] = useState(true);
   const [value, setValue, replyComment] = useOnReply(comment?.id, dispatch);
+  const hasLoggedUser = useSelector((state) => !!state.sessionReducer.token);
 
   const loadMore = (page, id) => {
     if (comment?.repliesCount === replies?.length || !replies) return;
@@ -89,7 +91,7 @@ export default function Comment({
           />
         ))}
 
-        {!comment.reply_to_id && (
+        {!comment.reply_to_id && hasLoggedUser && (
           <div className={styles.replyContainer}>
             <MarkDownEditor
               minimized={minimized && !value.trim()}

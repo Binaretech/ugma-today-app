@@ -1,26 +1,35 @@
 .wrapper {
-	width: 100%;
-	padding: 20px 0px;
+  width: 100%;
+  padding: 20px 0px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .mainContainer {
-	display: flex;
-	justify-content: space-evenly;
-	flex-direction: row;
-	flex-wrap: wrap;
-	overflow-y: scroll;
-	height: fit-content;
-	max-height: 300px;
+  display: flex;
+  justify-content: space-evenly;
+  flex-direction: row;
+  flex-wrap: wrap;
+  overflow-y: scroll;
+  max-height: 450px;
+  min-width: 150px;
+  max-width: 800px;
 }
 
 .mainContainer > div {
-	margin-top: 10px;
-	margin-bottom: 10px;
-	margin-right: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-right: 10px;
 }
 
 .emptyResults {
-	width: 100%;
-	display: flex;
-	justify-content: center;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.buttonContainer {
+  padding-top: 20px;
+  width: fit-content;
 }
