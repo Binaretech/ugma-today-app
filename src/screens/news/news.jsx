@@ -22,13 +22,15 @@ export default function News({ onlyMostRecentNews }) {
           <Loader />
         </div>
       ) : news.length > 0 ? (
-        <List className={styles.container}>
-          {news.map((item) => (
-            <ListItem key={item.id}>
-              <NewsTile news={item} />
-            </ListItem>
-          ))}
-        </List>
+        <div className={styles.resultsContainer}>
+          <List className={styles.container}>
+            {news.map((item) => (
+              <ListItem key={item.id}>
+                <NewsTile news={item} />
+              </ListItem>
+            ))}
+          </List>
+        </div>
       ) : (
         <div className={styles.emptyResults}>
           <p>{trans('words.emptyResults')}</p>
