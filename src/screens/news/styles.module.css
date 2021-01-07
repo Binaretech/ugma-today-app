@@ -4,6 +4,11 @@
   align-items: center;
 }
 
+.resultsContainer {
+  height: 70vh;
+  overflow-y: auto;
+}
+
 .loader {
   display: flex;
   justify-content: center;
