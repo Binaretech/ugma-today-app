@@ -22,7 +22,7 @@ export default function News({ onlyMostRecentNews }) {
           <Loader />
         </div>
       ) : news.length > 0 ? (
-        <div className={styles.resultsContainer}>
+        <div className={onlyMostRecentNews ? '' : styles.resultsContainer}>
           <List className={styles.container}>
             {news.map((item) => (
               <ListItem key={item.id}>
