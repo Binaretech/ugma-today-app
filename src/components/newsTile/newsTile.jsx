@@ -1,11 +1,11 @@
-import React from "react";
-import { Avatar, Card } from "@material-ui/core";
-import ReactMarkdown from "react-markdown";
-import styles from "./styles.module.css";
-import dayjs from "dayjs";
-import { useHistory } from "react-router-dom";
-import paths, { formatPath } from "../../routes/paths";
-import LikesAndComments from "../../components/likesAndComments";
+import React from 'react';
+import { Avatar, Card } from '@material-ui/core';
+import ReactMarkdown from 'react-markdown';
+import styles from './styles.module.css';
+import dayjs from 'dayjs';
+import { useHistory } from 'react-router-dom';
+import paths, { formatPath } from '../../routes/paths';
+import LikesAndComments from '../../components/likesAndComments';
 
 /**
  * @typedef {object} Post
@@ -27,7 +27,7 @@ export default function NewsTile({ news }) {
       </div>
       <div>
         <ReactMarkdown skipHtml>
-          {news?.isCutted ? news?.preview?.trim() + "..." : news?.preview}
+          {news?.isCutted ? news?.preview?.trim() + '...' : news?.preview}
         </ReactMarkdown>
       </div>
       <div className={styles.author}>
