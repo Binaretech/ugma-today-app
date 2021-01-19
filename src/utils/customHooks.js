@@ -214,3 +214,26 @@ export function useLogout() {
       });
   };
 }
+
+/**
+ * Get the window size to render specific UI stuff
+ * @returns [width, height]
+ */
+export function useWindowSize() {
+  const [width, setWidth] = useState(window.innerWidth);
+  const [height, setHeight] = useState(window.innerHeight);
+  const setWindowsSize = () => {
+    setWidth(window.innerWidth);
+    setHeight(Window.innerHeight);
+  };
+
+  useEffect(() => {
+    window.addEventListener('resize', setWindowsSize);
+
+    return () => {
+      window.removeEventListener('resize', setWindowsSize);
+    };
+  });
+
+  return [width, height];
+}
