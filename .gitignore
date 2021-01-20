@@ -8,6 +8,8 @@
 # testing
 /coverage
 **/*__snapshots__/
+**/*.storybook/
+**/*stories/
 
 # production
 /build

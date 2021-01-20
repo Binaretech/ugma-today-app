@@ -1,8 +1,6 @@
 {
-  "short_name": "UGMAToday",
-  "name": "UGMAToday App",
-  "version": "1.1",
-  "manifest_version": 2,
+  "short_name": "React App",
+  "name": "Create React App Sample",
   "icons": [
     {
       "src": "favicon.ico",
@@ -10,17 +8,12 @@
       "type": "image/x-icon"
     },
     {
-      "src": "128.png",
+      "src": "logo192.png",
       "type": "image/png",
-      "sizes": "128x128"
+      "sizes": "192x192"
     },
     {
-      "src": "256.png",
-      "type": "image/png",
-      "sizes": "256x256"
-    },
-    {
-      "src": "512.png",
+      "src": "logo512.png",
       "type": "image/png",
       "sizes": "512x512"
     }
