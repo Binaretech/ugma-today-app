@@ -1,5 +1,10 @@
+#linksContainer > button {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
 @media (max-width: 400px) {
-	#linksContainer {
-		display: none;
-	}
+  #linksContainer {
+    display: none;
+  }
 }
