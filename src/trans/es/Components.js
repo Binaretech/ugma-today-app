@@ -28,4 +28,8 @@ export default {
   cardCost: {
     detailsButton: 'Ver más',
   },
+  Footer: {
+    madeWith: 'Hecho con',
+    byStudents: 'por estudiantes para estudiantes',
+  },
 };
