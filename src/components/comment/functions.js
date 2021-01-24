@@ -35,7 +35,7 @@ export function useHandleRepliesPagination(dispatch) {
 export function useOnLike(id, dispatch, reply = false) {
   const [send] = useXhr();
   function like() {
-    send({ ...requests.comment.like, params: { id } }).then(() =>
+    return send({ ...requests.comment.like, params: { id } }).then(() =>
       dispatch({
         type: !reply ? newsActions.LIKE_COMMENT : newsActions.LIKE_REPLY,
         comment: id,
@@ -44,7 +44,7 @@ export function useOnLike(id, dispatch, reply = false) {
   }
 
   function unlike() {
-    send({ ...requests.comment.unlike, params: { id } }).then(() =>
+    return send({ ...requests.comment.unlike, params: { id } }).then(() =>
       dispatch({
         type: !reply ? newsActions.UNLIKE_COMMENT : newsActions.UNLIKE_REPLY,
         comment: id,

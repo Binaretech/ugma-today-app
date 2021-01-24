@@ -5,6 +5,7 @@ import { useHistory } from 'react-router-dom';
 import paths from '../../routes/paths';
 import { useDispatch, useSelector } from 'react-redux';
 import { snackbarMessage } from '../../redux/actions/snackbarActions';
+import { removeSession } from '../../redux/actions/sessionActions';
 import { trans } from '../../trans/trans';
 
 /**
@@ -86,6 +87,7 @@ export function useXhr(params) {
         }
 
         if (xhr.current.status === 401 && options.redirectUnauthorized) {
+          dispatch(removeSession());
           history.push(paths.login);
           return reject({ ...response, status: xhr.current.status });
         }
