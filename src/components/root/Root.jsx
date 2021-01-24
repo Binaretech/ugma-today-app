@@ -7,20 +7,20 @@ import paths from '../../routes/paths';
 import { loadUserData } from '../../utils/functions';
 
 function Root({ children }) {
-	const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-	const history = useHistory();
+  const history = useHistory();
 
-	useEffect(() => {
-		const data = loadUserData();
-		if (data) {
-			dispatch(setLogin(data));
-			return;
-		}
-		history.push(paths.home);
-	}, [dispatch, history]);
+  useEffect(() => {
+    const data = loadUserData();
+    if (data) {
+      dispatch(setLogin(data));
+      return;
+    }
+    history.push(paths.home);
+  }, [dispatch, history]);
 
-	return <Scaffold>{children}</Scaffold>;
+  return <Scaffold>{children}</Scaffold>;
 }
 
 export default Root;
