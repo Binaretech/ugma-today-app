@@ -125,7 +125,7 @@ export default function Scaffold(props) {
   }, [width]);
 
   return (
-    <div>
+    <div className={styles.container}>
       <div className={classes.root}>
         <CssBaseline />
         <AppBar
