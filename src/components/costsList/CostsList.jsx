@@ -51,7 +51,11 @@ function CostsList() {
 
   return (
     <div className={styles.wrapper}>
-      <div className={styles.mainContainer}>
+      <div
+        className={`${styles.mainContainer} ${
+          (loading && styles.noScroll) ?? ''
+        }`}
+      >
         {loading ? (
           <Loader />
         ) : (

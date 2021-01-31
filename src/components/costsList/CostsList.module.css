@@ -6,6 +6,10 @@
   align-items: center;
 }
 
+.noScroll {
+  overflow: hidden !important;
+}
+
 .mainContainer {
   display: flex;
   justify-content: space-evenly;
