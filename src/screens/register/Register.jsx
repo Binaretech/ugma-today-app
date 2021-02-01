@@ -26,6 +26,13 @@ function Register() {
     showErrorSnackbar: true,
   });
 
+  const passwordRulesMessages = [
+    'minimunCharacters',
+    'maximunCharacters',
+    'incorrectPatron',
+    'include',
+  ];
+
   function onSubmit() {
     if (manager.hasErrors()) return;
 
@@ -103,6 +110,11 @@ function Register() {
             setValue={manager.setValue}
             setError={manager.setError}
           />
+          <div className={styles.passwordRules}>
+            {passwordRulesMessages.map((message) => (
+              <p key={message}>{trans(`Screens.Register.${message}`)}</p>
+            ))}
+          </div>
           <Input
             label={trans('words.confirmPassword')}
             name="password_confirmation"
