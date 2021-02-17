@@ -5,6 +5,9 @@ export default {
   ListCosts: {
     rowsPerPage: 'Registros por página',
   },
+  Profile: {
+    updateButton: 'Actualizar perfil',
+  },
   Register: {
     registerButton: 'Registrarse',
     confirmPassword: 'Las contraseñas no coinciden',

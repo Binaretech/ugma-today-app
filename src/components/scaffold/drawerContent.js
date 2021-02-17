@@ -36,7 +36,13 @@ export default (userId) => {
   ];
 };
 
-const privateOptions = [];
+const privateOptions = [
+  {
+    title: trans('Components.scaffold.profile'),
+    icon: PersonIcon,
+    to: paths.profile,
+  },
+];
 
 const hideAfterLoginOptions = [
   {

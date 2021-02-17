@@ -4,4 +4,5 @@ export default {
   createCost: '/cost',
   register: '/register',
   logout: '/logout',
+  user: '/user',
 };

@@ -17,6 +17,7 @@ export default {
     login: 'Iniciar sesión',
     register: 'Registrarse',
     logout: 'Cerrar sesión',
+    profile: 'Perfil',
   },
   createCost: {
     createPrice: 'Registrar nuevo precio',

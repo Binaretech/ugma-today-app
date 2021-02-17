@@ -48,3 +48,14 @@ export function email(value) {
 export function notRegex(value, _, regex = new RegExp('')) {
   return new RegExp(regex).test(value);
 }
+
+// THESE ARE CUSTOM RULES, CURRENTLY NOT WORKING LIKE REGULAR RULES
+export function confirmedPassword(value, valueToConfirm) {
+  if (!hasContent(value) && !hasContent(valueToConfirm)) return true;
+  return value === valueToConfirm;
+}
+
+export function validateSecuenceInPassword(value) {
+  if (value === '123456' || value === 'abcdef') return false;
+  return true;
+}
