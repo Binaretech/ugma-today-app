@@ -1,12 +1,13 @@
-import { lazy } from "react";
-import paths from "./paths";
+import { lazy } from 'react';
+import paths from './paths';
 
-const Login = lazy(() => import("../screens/login/Login"));
-const NotFound = lazy(() => import("../screens/notFound/NotFound"));
-const Home = lazy(() => import("../screens/home/Home"));
-const Register = lazy(() => import("../screens/register/Register"));
-const News = lazy(() => import("../screens/news"));
-const NewsView = lazy(() => import("../screens/newsView"));
+const Login = lazy(() => import('../screens/login/Login'));
+const NotFound = lazy(() => import('../screens/notFound/NotFound'));
+const Home = lazy(() => import('../screens/home/Home'));
+const Register = lazy(() => import('../screens/register/Register'));
+const News = lazy(() => import('../screens/news'));
+const NewsView = lazy(() => import('../screens/newsView'));
+const Profile = lazy(() => import('../screens/profile'));
 
 const routes = (id) => {
   return [
@@ -14,7 +15,7 @@ const routes = (id) => {
     ...(!id ? hideAfterLogin : []),
     ...(id ? privateRoutes : []),
     {
-      path: "*",
+      path: '*',
       component: NotFound,
     },
   ];
@@ -40,7 +41,13 @@ const publicRoutes = [
   },
 ];
 
-const privateRoutes = [];
+const privateRoutes = [
+  {
+    path: paths.profile,
+    exact: true,
+    component: Profile,
+  },
+];
 
 const hideAfterLogin = [
   {

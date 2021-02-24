@@ -1,12 +1,13 @@
 const path = {
-  home: "/",
-  login: "/login",
-  createCost: "/create-cost",
-  costList: "/cost-list",
-  register: "/register",
-  posts: "/posts",
-  news: "/news",
-  newsDetails: "/news/:id",
+  home: '/',
+  login: '/login',
+  createCost: '/create-cost',
+  costList: '/cost-list',
+  register: '/register',
+  posts: '/posts',
+  news: '/news',
+  newsDetails: '/news/:id',
+  profile: '/profile',
 };
 
 export default path;

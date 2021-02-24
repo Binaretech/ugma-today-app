@@ -4,29 +4,33 @@ import Button from '@material-ui/core/Button';
 import Loader from '../../components/loader/Loader';
 
 import apiEndpoints from '../../apiEndpoints';
-import paths from '../../routes/paths';
-import { useDispatch } from 'react-redux';
-import { setLogin } from '../../redux/actions/sessionActions';
-import { useHistory } from 'react-router-dom';
 import { snackbarMessage } from '../../redux/actions/snackbarActions';
-import { useXhr } from '../../utils/xhr/hook';
 import { useDataManager } from '../../utils/customHooks';
+import { trans } from '../../trans/trans';
+import { useDispatch, useSelector } from 'react-redux';
+import { useXhr } from '../../utils/xhr/hook';
+import styles from './Profile.module.css';
 import {
   confirmedPassword,
   validateSecuenceInPassword,
 } from '../../utils/validator/validatorRules';
-import { trans } from '../../trans/trans';
-import styles from './Register.module.css';
+import { setUserData } from '../../redux/actions/sessionActions';
 
-function Register() {
+export default function Profile() {
   const [loading, setLoading] = useState(false);
   const inputValues = {};
-  const manager = useDataManager(inputValues);
   const dispatch = useDispatch();
-  const history = useHistory();
-  const [send] = useXhr({
-    url: apiEndpoints.register,
-    method: 'POST',
+  const userInfo = useSelector((state) => state.sessionReducer);
+  const manager = useDataManager(inputValues);
+  const [getUserData] = useXhr({
+    url: `${apiEndpoints.user}/${userInfo.id}`,
+    method: 'GET',
+    showErrorSnackbar: true,
+  });
+
+  const [sendUpdateUserData] = useXhr({
+    url: apiEndpoints.user,
+    method: 'PUT',
     showErrorSnackbar: true,
   });
 
@@ -37,27 +41,34 @@ function Register() {
     'include',
   ];
 
+  const handleCatch = (err) => {
+    setLoading(false);
+    dispatch(snackbarMessage(err.message));
+    console.error(err);
+  };
+
   function onSubmit() {
     if (manager.hasErrors()) return;
 
     setLoading(true);
-    send({
+    sendUpdateUserData({
       body: { ...manager.getData() },
     })
-      .then((res) => {
-        setLoading(false);
-        dispatch(setLogin(res.data));
-        history.push(paths.home);
+      .then((_) => {
+        manager.cleanData();
+
+        getUserData()
+          .then((res) => {
+            setLoading(false);
+            dispatch(setUserData(res));
+          })
+          .catch(handleCatch);
       })
-      .catch((err) => {
-        setLoading(false);
-        dispatch(snackbarMessage(err.message));
-        console.error(err);
-      });
+      .catch(handleCatch);
   }
 
   return (
-    <div className={styles.container}>
+    <div>
       {(loading && <Loader fullscreen />) || (
         <form className={styles.form}>
           <Input
@@ -65,7 +76,8 @@ function Register() {
             name="name"
             variant="outlined"
             value={inputValues.name}
-            rules={['required', 'min:3']}
+            rules={['min:3']}
+            defaultValue={userInfo.profile?.name}
             setValue={manager.setValue}
             setError={manager.setError}
           />
@@ -74,7 +86,8 @@ function Register() {
             name="lastname"
             variant="outlined"
             value={inputValues.lastname}
-            rules={['required', 'min:3']}
+            rules={['min:3']}
+            defaultValue={userInfo.profile?.lastname}
             setValue={manager.setValue}
             setError={manager.setError}
           />
@@ -83,7 +96,7 @@ function Register() {
             name="username"
             variant="outlined"
             value={inputValues.username}
-            rules={['required']}
+            defaultValue={userInfo.username}
             setValue={manager.setValue}
             setError={manager.setError}
           />
@@ -92,7 +105,8 @@ function Register() {
             name="email"
             variant="outlined"
             value={inputValues.email}
-            rules={['required', 'email']}
+            rules={['email']}
+            defaultValue={userInfo.profile?.email}
             setValue={manager.setValue}
             setError={manager.setError}
           />
@@ -103,7 +117,7 @@ function Register() {
             variant="outlined"
             value={inputValues.password}
             rules={[
-              'required',
+              'nullable',
               'min:6',
               'max:45',
               {
@@ -126,7 +140,7 @@ function Register() {
             variant="outlined"
             value={inputValues.password}
             rules={[
-              'required',
+              'nullable',
               {
                 message: trans('Screens.Register.confirmPassword'),
                 validation: (value) =>
@@ -137,12 +151,10 @@ function Register() {
             setError={manager.setError}
           />
           <Button variant="contained" onClick={onSubmit}>
-            {trans('Screens.Register.registerButton')}
+            {trans('Screens.Profile.updateButton')}
           </Button>
         </form>
       )}
     </div>
   );
 }
-
-export default Register;

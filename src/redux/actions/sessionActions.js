@@ -35,9 +35,13 @@ export function removeSession() {
 }
 
 export function setUserData(payload) {
+  let utd = JSON.parse(localStorage.getItem('utd'));
+  localStorage.removeItem('utd');
+  utd = { ...utd, ...payload.data };
+  localStorage.setItem('utd', JSON.stringify(utd || {}));
   return {
     type: sessionActions.LOGIN,
-    payload,
+    payload: payload.data,
   };
 }
 
